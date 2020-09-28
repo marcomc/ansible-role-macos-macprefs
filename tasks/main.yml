@@ -12,6 +12,11 @@
     changed_when: no
     failed_when: no
 
+  - name: macprefs_version
+    debug:
+      var: macprefs_version
+    when: verbose|bool
+
   - include_tasks: patch-with-marcomc-d79da5d.yml
     when: macprefs_version.stdout | regex_search('1.0.26')
 

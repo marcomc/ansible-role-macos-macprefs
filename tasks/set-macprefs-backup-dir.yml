@@ -6,14 +6,14 @@
 
   - name: User's default shell
     set_fact:
-      target_user_id_default_shell: "{{ item  }}"
+      target_user_default_shell: "{{ item  }}"
     loop:
       - "{{ command_result.stdout | basename }}"
   when:
-    - target_user_id_default_shell is not defined or target_user_id_default_shell | length == 0
+    - target_user_default_shell is not defined or target_user_default_shell | length == 0
     - not macprefs_update_for_all_shell_types|bool
 
-- name: Set 'MACPREFS_BACKUP_DIR' in the user's {{ target_user_id_default_shell }} config
+- name: Set 'MACPREFS_BACKUP_DIR' in the user's shell config
   lineinfile:
     path: "/Users/{{ target_user_id }}/{{ item.config_file }}"
     state: present
@@ -35,5 +35,7 @@
     - shell_name: 'fish'
       config_file: ".config/fish/config.fish"
       line: "set -gx MACPREFS_BACKUP_DIR '{{ macprefs_backup_dir }}'"
-  when: item.shell_name == target_user_id_default_shell or macprefs_update_for_all_shell_types|bool
+  when:
+    - item.shell_name == target_user_default_shell|dafault('') or
+      macprefs_update_for_all_shell_types|bool
 ...
