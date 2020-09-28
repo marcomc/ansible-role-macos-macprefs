@@ -1,16 +1,16 @@
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/COMMIT_EDITMSG ./macprefs/.git/COMMIT_EDITMSG
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/COMMIT_EDITMSG macprefs/.git/COMMIT_EDITMSG
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/COMMIT_EDITMSG	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/COMMIT_EDITMSG	2020-08-14 19:28:02.000000000 -0300
++++ macprefs/.git/COMMIT_EDITMSG	2020-08-14 19:28:02.000000000 -0300
 @@ -0,0 +1 @@
 +double quote name argument for finder
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/HEAD ./macprefs/.git/HEAD
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/HEAD macprefs/.git/HEAD
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/HEAD	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/HEAD	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.git/HEAD	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1 @@
 +ref: refs/heads/master
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/config ./macprefs/.git/config
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/config macprefs/.git/config
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/config	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/config	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.git/config	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1,13 @@
 +[core]
 +	repositoryformatversion = 0
@@ -25,14 +25,14 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/config ./macprefs/.git/conf
 +[branch "master"]
 +	remote = origin
 +	merge = refs/heads/master
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/description ./macprefs/.git/description
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/description macprefs/.git/description
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/description	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/description	2020-08-14 14:43:30.000000000 -0300
++++ macprefs/.git/description	2020-08-14 14:43:30.000000000 -0300
 @@ -0,0 +1 @@
 +Unnamed repository; edit this file 'description' to name the repository.
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/applypatch-msg.sample ./macprefs/.git/hooks/applypatch-msg.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/applypatch-msg.sample macprefs/.git/hooks/applypatch-msg.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/applypatch-msg.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/applypatch-msg.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/applypatch-msg.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,15 @@
 +#!/bin/sh
 +#
@@ -49,9 +49,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/applypatch-msg.sample
 +commitmsg="$(git rev-parse --git-path hooks/commit-msg)"
 +test -x "$commitmsg" && exec "$commitmsg" ${1+"$@"}
 +:
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/commit-msg.sample ./macprefs/.git/hooks/commit-msg.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/commit-msg.sample macprefs/.git/hooks/commit-msg.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/commit-msg.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/commit-msg.sample	2020-08-14 14:43:30.000000000 -0300
++++ macprefs/.git/hooks/commit-msg.sample	2020-08-14 14:43:30.000000000 -0300
 @@ -0,0 +1,24 @@
 +#!/bin/sh
 +#
@@ -77,9 +77,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/commit-msg.sample ./m
 +	echo >&2 Duplicate Signed-off-by lines.
 +	exit 1
 +}
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/fsmonitor-watchman.sample ./macprefs/.git/hooks/fsmonitor-watchman.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/fsmonitor-watchman.sample macprefs/.git/hooks/fsmonitor-watchman.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/fsmonitor-watchman.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/fsmonitor-watchman.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/fsmonitor-watchman.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,173 @@
 +#!/usr/bin/perl
 +
@@ -254,9 +254,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/fsmonitor-watchman.sa
 +
 +	return $working_dir;
 +}
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update 2.sample ./macprefs/.git/hooks/post-update 2.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update 2.sample macprefs/.git/hooks/post-update 2.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update 2.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/post-update 2.sample	2020-08-05 23:30:25.000000000 -0300
++++ macprefs/.git/hooks/post-update 2.sample	2020-08-05 23:30:25.000000000 -0300
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +#
@@ -266,9 +266,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update 2.sample 
 +# To enable this hook, rename this file to "post-update".
 +
 +exec git update-server-info
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update.sample ./macprefs/.git/hooks/post-update.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update.sample macprefs/.git/hooks/post-update.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/post-update.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/post-update.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +#
@@ -278,9 +278,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update.sample ./
 +# To enable this hook, rename this file to "post-update".
 +
 +exec git update-server-info
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch 2.sample ./macprefs/.git/hooks/pre-applypatch 2.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch 2.sample macprefs/.git/hooks/pre-applypatch 2.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch 2.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-applypatch 2.sample	2020-08-05 23:30:25.000000000 -0300
++++ macprefs/.git/hooks/pre-applypatch 2.sample	2020-08-05 23:30:25.000000000 -0300
 @@ -0,0 +1,14 @@
 +#!/bin/sh
 +#
@@ -296,9 +296,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch 2.samp
 +precommit="$(git rev-parse --git-path hooks/pre-commit)"
 +test -x "$precommit" && exec "$precommit" ${1+"$@"}
 +:
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch.sample ./macprefs/.git/hooks/pre-applypatch.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch.sample macprefs/.git/hooks/pre-applypatch.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-applypatch.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/pre-applypatch.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,14 @@
 +#!/bin/sh
 +#
@@ -314,9 +314,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch.sample
 +precommit="$(git rev-parse --git-path hooks/pre-commit)"
 +test -x "$precommit" && exec "$precommit" ${1+"$@"}
 +:
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-commit.sample ./macprefs/.git/hooks/pre-commit.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-commit.sample macprefs/.git/hooks/pre-commit.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-commit.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-commit.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/pre-commit.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,49 @@
 +#!/bin/sh
 +#
@@ -367,9 +367,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-commit.sample ./m
 +
 +# If there are whitespace errors, print the offending file names and fail.
 +exec git diff-index --check --cached $against --
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit 2.sample ./macprefs/.git/hooks/pre-merge-commit 2.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit 2.sample macprefs/.git/hooks/pre-merge-commit 2.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit 2.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-merge-commit 2.sample	2020-08-05 23:30:25.000000000 -0300
++++ macprefs/.git/hooks/pre-merge-commit 2.sample	2020-08-05 23:30:25.000000000 -0300
 @@ -0,0 +1,13 @@
 +#!/bin/sh
 +#
@@ -384,9 +384,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit 2.sa
 +test -x "$GIT_DIR/hooks/pre-commit" &&
 +        exec "$GIT_DIR/hooks/pre-commit"
 +:
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit.sample ./macprefs/.git/hooks/pre-merge-commit.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit.sample macprefs/.git/hooks/pre-merge-commit.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-merge-commit.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/pre-merge-commit.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,13 @@
 +#!/bin/sh
 +#
@@ -401,9 +401,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit.samp
 +test -x "$GIT_DIR/hooks/pre-commit" &&
 +        exec "$GIT_DIR/hooks/pre-commit"
 +:
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-push.sample ./macprefs/.git/hooks/pre-push.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-push.sample macprefs/.git/hooks/pre-push.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-push.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-push.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/pre-push.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,53 @@
 +#!/bin/sh
 +
@@ -458,9 +458,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-push.sample ./mac
 +done
 +
 +exit 0
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-rebase.sample ./macprefs/.git/hooks/pre-rebase.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-rebase.sample macprefs/.git/hooks/pre-rebase.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-rebase.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-rebase.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/pre-rebase.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,169 @@
 +#!/bin/sh
 +#
@@ -631,9 +631,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-rebase.sample ./m
 +	if this is empty, it is fully merged to "master".
 +
 +DOC_END
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-receive.sample ./macprefs/.git/hooks/pre-receive.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-receive.sample macprefs/.git/hooks/pre-receive.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-receive.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/pre-receive.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/pre-receive.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,24 @@
 +#!/bin/sh
 +#
@@ -659,9 +659,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-receive.sample ./
 +		i=$((i + 1))
 +	done
 +fi
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/prepare-commit-msg.sample ./macprefs/.git/hooks/prepare-commit-msg.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/prepare-commit-msg.sample macprefs/.git/hooks/prepare-commit-msg.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/prepare-commit-msg.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/prepare-commit-msg.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/prepare-commit-msg.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,42 @@
 +#!/bin/sh
 +#
@@ -705,9 +705,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/prepare-commit-msg.sa
 +# then
 +#   /usr/bin/perl -i.bak -pe 'print "\n" if !$first_line++' "$COMMIT_MSG_FILE"
 +# fi
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/update.sample ./macprefs/.git/hooks/update.sample
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/update.sample macprefs/.git/hooks/update.sample
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/update.sample	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/hooks/update.sample	2020-08-14 14:43:31.000000000 -0300
++++ macprefs/.git/hooks/update.sample	2020-08-14 14:43:31.000000000 -0300
 @@ -0,0 +1,128 @@
 +#!/bin/sh
 +#
@@ -837,10 +837,10 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/update.sample ./macpr
 +
 +# --- Finished
 +exit 0
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/index and ./macprefs/.git/index differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/info/exclude ./macprefs/.git/info/exclude
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/index and macprefs/.git/index differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/info/exclude macprefs/.git/info/exclude
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/info/exclude	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/info/exclude	2020-08-14 14:43:30.000000000 -0300
++++ macprefs/.git/info/exclude	2020-08-14 14:43:30.000000000 -0300
 @@ -0,0 +1,6 @@
 +# git ls-files --others --exclude-from=.git/info/exclude
 +# Lines that start with '#' are comments.
@@ -848,50 +848,50 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/info/exclude ./macprefs/.gi
 +# exclude patterns (uncomment them if you want to use them):
 +# *.[oa]
 +# *~
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/HEAD ./macprefs/.git/logs/HEAD
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/HEAD macprefs/.git/logs/HEAD
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/HEAD	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/logs/HEAD	2020-08-14 19:28:02.000000000 -0300
++++ macprefs/.git/logs/HEAD	2020-08-14 19:28:02.000000000 -0300
 @@ -0,0 +1,2 @@
 +0000000000000000000000000000000000000000 8a432f920b2756f91b2424fa300cd94b9f665c8e Marco Massari Calderone <marco@marcomc.com> 1597427020 -0300	clone: from github.com:marcomc/macprefs.git
 +8a432f920b2756f91b2424fa300cd94b9f665c8e d79da5d05ebdf7279b1bb53ca29dbad08271f3ad Marco Massari Calderone <marco@marcomc.com> 1597444082 -0300	commit: double quote name argument for finder
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/heads/master ./macprefs/.git/logs/refs/heads/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/heads/master macprefs/.git/logs/refs/heads/master
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/heads/master	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/logs/refs/heads/master	2020-08-14 19:28:02.000000000 -0300
++++ macprefs/.git/logs/refs/heads/master	2020-08-14 19:28:02.000000000 -0300
 @@ -0,0 +1,2 @@
 +0000000000000000000000000000000000000000 8a432f920b2756f91b2424fa300cd94b9f665c8e Marco Massari Calderone <marco@marcomc.com> 1597427020 -0300	clone: from github.com:marcomc/macprefs.git
 +8a432f920b2756f91b2424fa300cd94b9f665c8e d79da5d05ebdf7279b1bb53ca29dbad08271f3ad Marco Massari Calderone <marco@marcomc.com> 1597444082 -0300	commit: double quote name argument for finder
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/HEAD ./macprefs/.git/logs/refs/remotes/origin/HEAD
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/HEAD macprefs/.git/logs/refs/remotes/origin/HEAD
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/HEAD	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/logs/refs/remotes/origin/HEAD	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.git/logs/refs/remotes/origin/HEAD	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1 @@
 +0000000000000000000000000000000000000000 8a432f920b2756f91b2424fa300cd94b9f665c8e Marco Massari Calderone <marco@marcomc.com> 1597427020 -0300	clone: from github.com:marcomc/macprefs.git
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/master ./macprefs/.git/logs/refs/remotes/origin/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/master macprefs/.git/logs/refs/remotes/origin/master
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/master	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/logs/refs/remotes/origin/master	2020-08-14 20:33:58.000000000 -0300
++++ macprefs/.git/logs/refs/remotes/origin/master	2020-08-14 20:33:58.000000000 -0300
 @@ -0,0 +1 @@
 +8a432f920b2756f91b2424fa300cd94b9f665c8e d79da5d05ebdf7279b1bb53ca29dbad08271f3ad Marco Massari Calderone <marco@marcomc.com> 1597448038 -0300	update by push
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a ./macprefs/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a macprefs/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a	2020-08-14 19:27:34.000000000 -0300
++++ macprefs/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a	2020-08-14 19:27:34.000000000 -0300
 @@ -0,0 +1,2 @@
-+xï¿½Sï¿½nï¿½0Lï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½:ï¿½2bï¿½ï¿½ ï¿½#Hï¿½%-e:Iï¿½ï¿½ï¿½>ï¿½Çr1vÔï¿½ï¿½fgFÃ¢ï¿½t{ï¿½ï¿½ï¿½ï¿½zï¿½@ï¿½F[ï¿½t~ï¿½ï¿½ï¿½ï¿½Su|ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½*ï¿½ï¿½Z	9ï¿½fï¿½ï¿½Ãœï¿½ï¿½ï¿½(Ð¢Ñ±ï¿½ï¿½ï¿½ï¿½aï¿½ï¿½ï¿½ï¿½Fï¿½Uï¿½apyJï¿½r9aï¿½90!ï¿½ï¿½tuï¿½ï¿½ï¿½#sOï¿½,UUM( Omï¿½ï¿½
-+ï¿½#Ð½TB7ï¿½B7	.$ï¿½ï¿½\hz)hï¿½ï¿½ï¿½ï¿½T:ï¿½ï¿½ï¿½2ï¿½ï¿½,f49:ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ø 7ï¿½uï¿½G[ï¿½[ï¿½ï¿½ï¿½ï¿½Kï¿½ï¿½ï¿½;ï¿½;ï¿½ï¿½ï¿½ï¿½ï¿½uHï¿½ï¿½ï¿½ï¿½Huï¿½Lï¿½ï¿½ï¿½#ï¿½ï¿½^9ï¿½ï¿½ zGï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½Û”Eï¿½ï¿½ï¿½6Jï¿½Gï¿½ï¿½ï¿½j"b&uï¿½ï¿½ï¿½ï¿½=ï¿½=ï¿½ï¿½r{ï¿½=nï¿½*ï¿½>gï¿½Iï¿½ï¿½kï¿½)&d|Iï¿½ï¿½Qï¿½ï¿½ï¿½ï¿½ï¿½4*Kï¿½EPï¿½iï¿½Ù¿ï¿½ï¿½~{ï¿½ï¿½ï¿½^Wï¿½&ï¿½TIgTï¿½ï¿½×»Kï¿½Ã?$	n_ï¿½ï¿½ï¿½ï¿½_Õ‰Z2RXï¿½5ï¿½~ï¿½ï¿½Lï¿½@ï¿½ï¿½ï¿½ï¿½ï¿½Û€ï¿½NÏ¥Gï¿½~ï¿½Bï¿½Eï¿½ï¿½dï¿½ï¿½ï¿½mï¿½
++x•S»nÜ0L­¯X¸‘äÈ:§2bàš ¥#H—%-e:Iðøþ>ËÇr1vÔà¾fgFÃ¢øt{÷ùƒ°zí@®F[‹t~’¶ÃýSu|Ôó,ÕÜÁ¢ç*•ŒZ	9ËfôŒÃœ×™±(Ð¢Ñ±¿ƒa©çå¬FåUãapyJðr9aµ90!ìàtuàŽÁ#sO¸,UUM( OmÚû
++è#Ð½TB7õB7	.$¸ð\hz)hû¾¯ÛT:ØÃä2¥ñ,f49:¡ó¼¼Ù¶©Ø 7©u±G[€[º…¯‘K¤Â;;ìˆÿîÍuH¨²‡ÐHu´L“çÊ#í“^9Å÷ zG¬ú¦ÎäÖíÛ_‰Û”E‹±è6JŒGÿ¬¥j"b&uè þÊ=ß=ÈÁr{Ø=nö*Å>gîIõ©k–)&d|IÁ³Qù½±¥ž4*K×EP¥i±Ù¿žÈ~{ó£^W®&‚TIgTºÔ×»K«Ã?$	n_®®¹Ò_Õ‰Z2RX¢5Ï~¦Lë@ºüÃì¿Û€çNÏ¥GÍ~ªB²E¬‚dÚêmÃ
 \ No newline at end of file
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/a6/60b81a5f2a69f4a431a43e0fb11d7adf278516 and ./macprefs/.git/objects/a6/60b81a5f2a69f4a431a43e0fb11d7adf278516 differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad ./macprefs/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/a6/60b81a5f2a69f4a431a43e0fb11d7adf278516 and macprefs/.git/objects/a6/60b81a5f2a69f4a431a43e0fb11d7adf278516 differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad macprefs/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad	2020-08-14 19:28:02.000000000 -0300
++++ macprefs/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad	2020-08-14 19:28:02.000000000 -0300
 @@ -0,0 +1,2 @@
-+xï¿½ï¿½MnC!ï¿½ï¿½ï¿½sï¿½V0ï¿½Wï¿½ï¿½J]ï¿½Ì´O
-+ï¿½ï¿½ï¿½ï¿½_ï¿½+da/lï¿½ï¿½\zkï¿½ï¿½63ï¿½ï¿½:GCNï¿½|Kï¿½dï¿½XK6ï¿½ï¿½ï¿½!:ï¿½Õ•ï¿½ï¿½*Qï¿½ï¿½ï¿½yI&ï¿½E+tÒºï¿½dsï¿½]ï¿½ï¿½ï¿½ï¿½}ï¿½ï¿½Ò—ï¿½ï¿½46ï¿½ï¿½Kï¿½ï¿½wï¿½s{_Ooï¿½ï¿½ï¿½ï¿½	Æ¥`ï¿½ï¿½ï¿½]ï¿½Aï¿½ï¿½;ï¿½ï¿½Uï¿½ï¿½/ï¿½ï¿½Oï¿½ï¿½Úº=~ï¿½ï¿½ï¿½#ï¿½Qï¿½}Qï¿½~X4
++x¥MnC!ƒ»æsV0áWŠªJ]÷Ì´O
++„ðî_’+da/lÉú\zkÛø63÷:GCN|Köd–XK6¦ª‚!:ãÕ•ïâ*QêŒÁyI&£E+tÒºÔdsï]‰¬è˜}ÀÒ—ßï46ø¦KåÑw†s{_Ooå£ôö	Æ¥`­Õá]¯AµÒ;ùÅUû‘/·£O†Úº=~öø#‹Q¶}Q©~X4
 \ No newline at end of file
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.idx and ./macprefs/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.idx differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.pack and ./macprefs/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.pack differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/packed-refs ./macprefs/.git/packed-refs
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.idx and macprefs/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.idx differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.pack and macprefs/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.pack differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/packed-refs macprefs/.git/packed-refs
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/packed-refs	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/packed-refs	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.git/packed-refs	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1,30 @@
-+# pack-refs with: peeled fully-peeled sorted
++# pack-refs with: peeled fully-peeled sorted 
 +8a432f920b2756f91b2424fa300cd94b9f665c8e refs/remotes/origin/master
 +81a34f9b92c599fcd6151bb8640a498b56a86de2 refs/tags/v1.0.0
 +55a1da5a87595067d21cf2197487f4939e0155b1 refs/tags/v1.0.1
@@ -921,24 +921,24 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/packed-refs ./macprefs/.git
 +ff3150ad5bf0acd44cbcffbe022efb94895ee51e refs/tags/v1.0.7
 +64ea81225fabfeeec1aa58ffe68ce9fa0ba30809 refs/tags/v1.0.8
 +18e9443dc0a5207d065fb4de5c73d4c7caf02d82 refs/tags/v1.0.9
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/heads/master ./macprefs/.git/refs/heads/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/heads/master macprefs/.git/refs/heads/master
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/heads/master	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/refs/heads/master	2020-08-14 19:28:02.000000000 -0300
++++ macprefs/.git/refs/heads/master	2020-08-14 19:28:02.000000000 -0300
 @@ -0,0 +1 @@
 +d79da5d05ebdf7279b1bb53ca29dbad08271f3ad
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/HEAD ./macprefs/.git/refs/remotes/origin/HEAD
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/HEAD macprefs/.git/refs/remotes/origin/HEAD
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/HEAD	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/refs/remotes/origin/HEAD	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.git/refs/remotes/origin/HEAD	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1 @@
 +ref: refs/remotes/origin/master
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/master ./macprefs/.git/refs/remotes/origin/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/master macprefs/.git/refs/remotes/origin/master
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/master	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.git/refs/remotes/origin/master	2020-08-14 20:33:58.000000000 -0300
++++ macprefs/.git/refs/remotes/origin/master	2020-08-14 20:33:58.000000000 -0300
 @@ -0,0 +1 @@
 +d79da5d05ebdf7279b1bb53ca29dbad08271f3ad
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.gitignore ./macprefs/.gitignore
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.gitignore macprefs/.gitignore
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.gitignore	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.gitignore	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.gitignore	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1,9 @@
 +*.pyc
 +__pycache__
@@ -949,9 +949,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.gitignore ./macprefs/.gitignore
 +macprefsc
 +.coverage
 +.pytest_cache
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.pylintrc ./macprefs/.pylintrc
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.pylintrc macprefs/.pylintrc
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.pylintrc	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.pylintrc	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.pylintrc	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1,425 @@
 +[MASTER]
 +
@@ -1378,9 +1378,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.pylintrc ./macprefs/.pylintrc
 +# Exceptions that will emit a warning when being caught. Defaults to
 +# "Exception"
 +overgeneral-exceptions=Exception
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/settings.json ./macprefs/.vscode/settings.json
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/settings.json macprefs/.vscode/settings.json
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/settings.json	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.vscode/settings.json	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.vscode/settings.json	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1,35 @@
 +{
 +"cSpell.words": [
@@ -1417,9 +1417,9 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/settings.json ./macprefs
 +  ],
 +  "python.unitTest.pyTestEnabled": false
 +}
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/tasks.json ./macprefs/.vscode/tasks.json
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/tasks.json macprefs/.vscode/tasks.json
 --- /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/tasks.json	1969-12-31 21:00:00.000000000 -0300
-+++ ./macprefs/.vscode/tasks.json	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/.vscode/tasks.json	2020-08-14 14:43:40.000000000 -0300
 @@ -0,0 +1,18 @@
 +{
 +    // See https://go.microsoft.com/fwlink/?LinkId=733558
@@ -1440,33 +1440,33 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/tasks.json ./macprefs/.v
 +    ]
 +}
 \ No newline at end of file
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/README.md ./macprefs/README.md
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/README.md macprefs/README.md
 --- /usr/local/Cellar/macprefs/1.0.26/bin/README.md	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/README.md	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/README.md	2020-08-14 14:43:40.000000000 -0300
 @@ -15,7 +15,7 @@
  ## Requirements
-
+ 
  - Mac OS X greater than 10.9 (maybe olderâ€¦ didn't test)
 -- Python 2.7 (Installed by default on Mac OS X > 10.6)
 +- Python 3.6
-
+ 
  ## Installation
-
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/app_store_preferences.cpython-38.pyc and ./macprefs/__pycache__/app_store_preferences.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/config.cpython-38.pyc and ./macprefs/__pycache__/config.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/dotfiles.cpython-38.pyc and ./macprefs/__pycache__/dotfiles.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/preferences.cpython-38.pyc and ./macprefs/__pycache__/preferences.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/shared_file_lists.cpython-38.pyc and ./macprefs/__pycache__/shared_file_lists.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/ssh_files.cpython-38.pyc and ./macprefs/__pycache__/ssh_files.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/startup_items.cpython-38.pyc and ./macprefs/__pycache__/startup_items.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/system_preferences.cpython-38.pyc and ./macprefs/__pycache__/system_preferences.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/utils.cpython-38.pyc and ./macprefs/__pycache__/utils.cpython-38.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/version.cpython-38.pyc and ./macprefs/__pycache__/version.cpython-38.pyc differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.py ./macprefs/app_store_preferences.py
+ 
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/app_store_preferences.cpython-38.pyc and macprefs/__pycache__/app_store_preferences.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/config.cpython-38.pyc and macprefs/__pycache__/config.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/dotfiles.cpython-38.pyc and macprefs/__pycache__/dotfiles.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/preferences.cpython-38.pyc and macprefs/__pycache__/preferences.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/shared_file_lists.cpython-38.pyc and macprefs/__pycache__/shared_file_lists.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/ssh_files.cpython-38.pyc and macprefs/__pycache__/ssh_files.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/startup_items.cpython-38.pyc and macprefs/__pycache__/startup_items.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/system_preferences.cpython-38.pyc and macprefs/__pycache__/system_preferences.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/utils.cpython-38.pyc and macprefs/__pycache__/utils.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/version.cpython-38.pyc and macprefs/__pycache__/version.cpython-38.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.py macprefs/app_store_preferences.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/app_store_preferences.py	2020-08-14 14:53:41.000000000 -0300
++++ macprefs/app_store_preferences.py	2020-08-14 14:53:41.000000000 -0300
 @@ -25,7 +25,7 @@
-
+ 
  def build_file_list():
      source = get_app_store_preferences_dir()
 -    command = 'find ' + source + '*/Data/Library/Preferences -type f -name *.plist'
@@ -1474,12 +1474,12 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.py ./macpr
      result = execute_shell(command, is_shell=True)
      files = result.split('\n')
      return files
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.pyc and ./macprefs/app_store_preferences.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/config.pyc and ./macprefs/config.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/dotfiles.pyc and ./macprefs/dotfiles.pyc differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs ./macprefs/macprefs
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.pyc and macprefs/app_store_preferences.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/config.pyc and macprefs/config.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/dotfiles.pyc and macprefs/dotfiles.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs macprefs/macprefs
 --- /usr/local/Cellar/macprefs/1.0.26/bin/macprefs	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/macprefs	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/macprefs	2020-08-14 14:43:40.000000000 -0300
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python3
@@ -1492,8 +1492,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs ./macprefs/macprefs
      app_store_preferences.backup()
 -    print 'Backup Complete.'
 +    print('Backup Complete.')
-
-
+ 
+ 
  def restore():
 @@ -31,7 +31,7 @@
      ssh_files.restore()
@@ -1501,8 +1501,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs ./macprefs/macprefs
      app_store_preferences.restore()
 -    print 'Restore Complete.'
 +    print('Restore Complete.')
-
-
+ 
+ 
  def invoke_func(args):
 @@ -64,7 +64,7 @@
          parser.print_help()
@@ -1512,23 +1512,23 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs ./macprefs/macprefs
 +    verbosity = 0 if args.verbose is None else args.verbose
      configure_logging(verbosity)
      invoke_func(args)
-
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs.template.rb ./macprefs/macprefs.template.rb
+ 
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs.template.rb macprefs/macprefs.template.rb
 --- /usr/local/Cellar/macprefs/1.0.26/bin/macprefs.template.rb	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/macprefs.template.rb	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/macprefs.template.rb	2020-08-14 14:43:40.000000000 -0300
 @@ -6,7 +6,7 @@
      url "https://github.com/clintmod/macprefs/archive/###version###.tar.gz"
      sha256 "###sha256###"
-
+   
 -    depends_on :python if MacOS.version <= :snow_leopard
 +    depends_on :python3
-
+   
      def install
        bin.install Dir["*"]
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/preferences.pyc and ./macprefs/preferences.pyc differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/preferences.pyc and macprefs/preferences.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py macprefs/publish.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/publish.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/publish.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/publish.py	2020-08-14 14:43:40.000000000 -0300
 @@ -2,14 +2,16 @@
  import glob
  import os
@@ -1541,8 +1541,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
 +import base64
  from utils import execute_shell, is_none_or_empty_string
  from version import __version__
-
-
+ 
+ 
  def check_for_uncommitted_files():
 -    print 'Checking for uncommitted files...'
 +    print('Checking for uncommitted files...')
@@ -1550,8 +1550,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
      if not 'nothing to commit' in result:
          raise ValueError(
 @@ -17,49 +19,50 @@
-
-
+ 
+ 
  def create_version_tag_and_push(tag):
 -    print 'Tagging git repository with version ' + tag
 +    print('Tagging git repository with version ' + tag)
@@ -1559,16 +1559,16 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
 -    print 'Pushing the new tag to github...'
 +    print('Pushing the new tag to github...')
      execute_shell(['git', 'push', 'origin', 'HEAD', '--tags'])
-
-
+ 
+ 
  def download_tar(filename):
 -    print 'Downloading the new version...'
 -    urllib.urlretrieve(
 +    print('Downloading the new version...')
 +    urllib.request.urlretrieve(
          'https://github.com/clintmod/macprefs/archive/' + filename, filename)
-
-
+ 
+ 
  def calc_sha256(filename):
 -    print 'Calculating the sha256 of the tarball...'
 +    print('Calculating the sha256 of the tarball...')
@@ -1579,8 +1579,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
 -    print sha256
 +    print(sha256)
      return sha256
-
-
+ 
+ 
  def create_brew_formula_file_content(version, sha256):
 -    print 'Generating base64 encoded brew formula...'
 +    print('Generating base64 encoded brew formula...')
@@ -1594,8 +1594,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
 +    filedata_bytes = bytes(filedata, 'utf-8')
 +    filedata = base64.b64encode(filedata_bytes)
      return filedata
-
-
+ 
+ 
  def get_sha_of_old_macprefs_formula():
 -    print 'Getting sha of old macprefs formula from github...'
 -    result = json.load(urllib2.urlopen(
@@ -1604,8 +1604,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
          'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
      # print 'sha = ' + result['sha']
      return result['sha']
-
-
+ 
+ 
  def upload_new_brew_formula(content, version, sha):
 -    print 'Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas'
 +    print('Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas')
@@ -1613,16 +1613,16 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
      auth_header = 'Authorization: token ' + token
      json_header = 'Content-Type: application/json'
 @@ -88,24 +91,24 @@
-
-
+ 
+ 
  def cleanup():
 -    print 'Cleaning up...'
 +    print('Cleaning up...')
      for f in glob.glob('*.tar.gz'):
          os.remove(f)
      os.remove('github_request.json')
-
-
+ 
+ 
  def download_macprefs():
 -    print 'Running brew update macprefs to verify version...'
 +    print('Running brew update macprefs to verify version...')
@@ -1630,29 +1630,29 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
      if not is_none_or_empty_string(result):
 -        print result
 +        print(result)
-
-
+ 
+ 
  def verify_macprefs():
      result = execute_shell(['macprefs', '--version'])
      message = '\nworkspace:\t' + __version__ + '\ninstalled:\t' + result
      assert __version__ in result, message
 -    print 'version check verified' + message
 +    print('version check verified' + message)
-
-
+ 
+ 
  def main():
 @@ -124,7 +127,7 @@
      download_macprefs()
      verify_macprefs()
-
+ 
 -    print 'Success'
 +    print('Success')
-
+ 
      return True
-
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.py ./macprefs/shared_file_lists.py
+ 
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.py macprefs/shared_file_lists.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/shared_file_lists.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/shared_file_lists.py	2020-08-14 14:43:40.000000000 -0300
 @@ -8,7 +8,7 @@
      log.info('Backing up shared file lists...')
      source = config.get_shared_file_lists_dir()
@@ -1662,26 +1662,26 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.py ./macprefs/
          log.info('Shared file backup failed.')
          return
      dest = config.get_shared_file_lists_backup_dir()
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.pyc and ./macprefs/shared_file_lists.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/ssh_files.pyc and ./macprefs/ssh_files.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/startup_items.pyc and ./macprefs/startup_items.pyc differ
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/system_preferences.pyc and ./macprefs/system_preferences.pyc differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_config.py ./macprefs/test_config.py
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.pyc and macprefs/shared_file_lists.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/ssh_files.pyc and macprefs/ssh_files.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/startup_items.pyc and macprefs/startup_items.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/system_preferences.pyc and macprefs/system_preferences.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_config.py macprefs/test_config.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_config.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_config.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_config.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,8 +1,8 @@
  import os
  from os import path
 -import config
  from mock import patch
-
+ 
 +import config
-
+ 
  def test_get_macprefs_dir():
      backup_dir = config.get_macprefs_dir()
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_dotfiles.py ./macprefs/test_dotfiles.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_dotfiles.py macprefs/test_dotfiles.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_dotfiles.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_dotfiles.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_dotfiles.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,6 +1,7 @@
  from os import path
 -import dotfiles
@@ -1689,11 +1689,11 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_dotfiles.py ./macprefs/test
 +
 +import dotfiles
  from config import get_dotfiles_backup_dir, get_home_dir, get_user
-
+ 
  @patch('dotfiles.get_dot_files')
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py ./macprefs/test_macprefs.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py macprefs/test_macprefs.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_macprefs.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_macprefs.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,20 +1,19 @@
 -from StringIO import StringIO
 -import imp
@@ -1701,14 +1701,14 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py ./macprefs/test
  import sys
  import logging as log
  from mock import patch, MagicMock
-
+ 
 +import utils
-
+ 
  # load as module
 -macprefs = imp.load_source('macprefs', 'macprefs')
 -
 +macprefs = utils.execute_module('macprefs', 'macprefs')
-
+ 
  @patch('sys.stdout', new_callable=StringIO)
  def test_invoke_help(mock_stdout):
      try:
@@ -1746,19 +1746,19 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py ./macprefs/test
          assert False, 'expected SystemExit'
      except SystemExit as e:
          assert e.code == 0 '''
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_preferences.py ./macprefs/test_preferences.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_preferences.py macprefs/test_preferences.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_preferences.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_preferences.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_preferences.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,5 +1,5 @@
 -from config import get_preferences_dir, get_preferences_backup_dir, get_user
  from mock import patch
 +from config import get_preferences_dir, get_preferences_backup_dir, get_user
  import preferences
-
-
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py ./macprefs/test_publish.py
+ 
+ 
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py macprefs/test_publish.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_publish.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_publish.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,9 +1,9 @@
  import json
  import sys
@@ -1769,8 +1769,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py ./macprefs/test_
  import publish
 +import utils
  from version import __version__
-
-
+ 
+ 
 @@ -11,7 +11,7 @@
      old_argv = sys.argv
      sys.argv = ['publish', '-test']
@@ -1778,36 +1778,36 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py ./macprefs/test_
 -    imp.load_source('__main__', 'publish.py')
 +    utils.execute_module('__main__', 'publish.py')
      sys.argv = old_argv
-
-
+ 
+ 
 @@ -28,7 +28,7 @@
          publish.check_for_uncommitted_files()
          assert False, 'expecting ValueError'
      except ValueError as e:
 -        assert 'uncommitted' in e.message
 +        assert 'uncommitted' in '\n'.join(e.args)
-
-
+ 
+ 
  @patch('publish.execute_shell')
 @@ -41,7 +41,7 @@
      execute_shell_mock.assert_has_calls(calls)
-
-
+ 
+ 
 -@patch('urllib.urlretrieve')
 +@patch('urllib.request.urlretrieve')
  def test_download_tar(urllib_urlretrieve_mock):
      filename = 'asdf'
      publish.download_tar(filename)
 @@ -65,12 +65,12 @@
-
+ 
  def test_create_brew_formula_file_content():
      filedata = publish.create_brew_formula_file_content('ver1', 'asdf1234')
 -    filedata = filedata.decode('base64')
 +    filedata = base64.b64decode(filedata).decode('utf-8')
      assert 'ver1.tar.gz' in filedata
      assert 'sha256 "asdf1234"' in filedata
-
-
+ 
+ 
 -@patch('publish.urllib2.urlopen')
 +@patch('publish.urllib.request.urlopen')
  @patch('publish.json.load')
@@ -1819,52 +1819,52 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py ./macprefs/test_
          execute_shell_mock.assert_called_with(['macprefs', '--version'])
 -        assert __version__ in e.message
 +        assert __version__ in '\n'.join(e.args)
-
-
+ 
+ 
  @patch('publish.glob.glob')
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_ssh_files.py ./macprefs/test_ssh_files.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_ssh_files.py macprefs/test_ssh_files.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_ssh_files.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_ssh_files.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_ssh_files.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,7 +1,7 @@
 -from config import get_ssh_backup_dir, get_ssh_user_dir, get_user
 -import ssh_files
  from mock import patch
-
+ 
 +from config import get_ssh_backup_dir, get_ssh_user_dir, get_user
 +import ssh_files
-
+ 
  @patch('ssh_files.copy_dir')
  def test_backup(copy_dir_mock):
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_startup_items.py ./macprefs/test_startup_items.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_startup_items.py macprefs/test_startup_items.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_startup_items.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_startup_items.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_startup_items.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,7 +1,7 @@
 -import startup_items
  from mock import patch
 -import config
-
+ 
 +import startup_items
 +import config
-
+ 
  @patch('startup_items.backup_system_daemons_agents')
  @patch('startup_items.backup_system_launch_agents')
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_system_preferences.py ./macprefs/test_system_preferences.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_system_preferences.py macprefs/test_system_preferences.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_system_preferences.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_system_preferences.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_system_preferences.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,8 +1,8 @@
  from os import path
 -import system_preferences
 -from config import get_sys_preferences_backup_dir
  from mock import patch
-
+ 
 +import system_preferences
 +from config import get_sys_preferences_backup_dir
-
+ 
  @patch('system_preferences.copy_dir')
  def test_backup(copy_dir_mock):
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py ./macprefs/test_utils.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py macprefs/test_utils.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/test_utils.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/test_utils.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,7 +1,8 @@
  from subprocess import CalledProcessError
  import logging as log
@@ -1873,16 +1873,16 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py ./macprefs/test_ut
  import utils
 -from mock import patch, PropertyMock
  import config
-
-
+ 
+ 
 @@ -16,7 +17,7 @@
      length = len(command)
      assert length > 0
      assert command[0] == 'asdf'
 -    return ''
 +    return b''
-
-
+ 
+ 
  @patch('utils.check_output')
 @@ -56,7 +57,7 @@
      files = ['asdf']
@@ -1893,16 +1893,16 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py ./macprefs/test_ut
      execute_shell_mock.assert_called_with(
          ['rsync', '-a', '-vv'] + files + [dest]
      )
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/utils.py ./macprefs/utils.py
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/utils.py macprefs/utils.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/utils.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/utils.py	2020-08-14 14:43:40.000000000 -0300
++++ macprefs/utils.py	2020-08-14 14:43:40.000000000 -0300
 @@ -1,16 +1,18 @@
  from subprocess import CalledProcessError, check_output, STDOUT
 +import sys
 +import importlib
  import logging as log
-
-
+ 
+ 
  def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False):
      output = ''
      log.debug('\n--- executing shell command ----\n')
@@ -1925,8 +1925,8 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/utils.py ./macprefs/utils.py
      if not is_none_or_empty_string(result):
 -        log.debug('change_mode_for_files: ' + result)
 +        log.debug('change_mode_for_files: %s', result)
-
-
+ 
+ 
  def change_owner(path, owner, should_recurse=True):
 @@ -103,3 +105,11 @@
      if val is None or val == '':
@@ -1940,11 +1940,11 @@ diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/utils.py ./macprefs/utils.py
 +    spec.loader.exec_module(mod)
 +    sys.modules[name] = mod
 +    return mod
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/utils.pyc and ./macprefs/utils.pyc differ
-diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/version.py ./macprefs/version.py
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/utils.pyc and macprefs/utils.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/version.py macprefs/version.py
 --- /usr/local/Cellar/macprefs/1.0.26/bin/version.py	2018-09-07 16:30:20.000000000 -0300
-+++ ./macprefs/version.py	2020-09-27 19:13:59.000000000 -0300
++++ macprefs/version.py	2020-09-27 19:13:59.000000000 -0300
 @@ -1 +1 @@
 -__version__ = 'v1.0.26'
 +__version__ = 'v1.0.26-marcomc-d79da5d'
-Binary files /usr/local/Cellar/macprefs/1.0.26/bin/version.pyc and ./macprefs/version.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/version.pyc and macprefs/version.pyc differ
