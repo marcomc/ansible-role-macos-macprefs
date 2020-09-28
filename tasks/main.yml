@@ -25,8 +25,10 @@
     - include_tasks: set-macprefs-backup-dir.yml
     - include_tasks: configure-cron-job.yml
       when: macprefs_regular_backup|int > 0
-    # - include_tasks: restore-macprefs-backup.yml
     become: "{{ target_user_id != ansible_user_id }}"
     become_user: "{{ target_user_id }}"
+    
+  - include_tasks: restore-macprefs-backup.yml
+    when: target_user_id == ansible_user_id
   # end block
   when: ansible_facts['os_family'] == 'Darwin'

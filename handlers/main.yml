@@ -1,0 +1,10 @@
+---
+- name: Waiting for the Macprefs restore to finish
+  async_status:
+    jid: "{{ macprefs_restore_sleeper.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 300
+  when:
+    - macprefs_restore_sleeper is defined
+  no_log: true
