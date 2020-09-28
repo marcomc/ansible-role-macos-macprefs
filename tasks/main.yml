@@ -18,7 +18,9 @@
     when: verbose|bool
 
   - include_tasks: patch-with-marcomc-d79da5d.yml
-    when: macprefs_version.stdout | regex_search('macprefs/1.0.26')
+    when:
+      - macprefs_version.stdout | regex_search('macprefs/1.0.26')
+      - not macprefs_version.stdout | regex_search('macprefs/1.0.26')
 
   - name: User specific tasks
     block:
@@ -27,7 +29,7 @@
       when: macprefs_regular_backup|int > 0
     become: "{{ target_user_id != ansible_user_id }}"
     become_user: "{{ target_user_id }}"
-    
+
   - include_tasks: restore-macprefs-backup.yml
     when: target_user_id == ansible_user_id
   # end block

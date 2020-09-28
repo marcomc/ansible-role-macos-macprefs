@@ -8,7 +8,7 @@
   - name: Verify if macpref 1.0.26 is already patched with 'marcomc-d79da5d'
     lineinfile:
       dest: "{{ macprefs_bin_path }}/version.py"
-      line: 'marcomc-d79da5d'
+      regexp: '^.*marcomc-d79da5d.*$'
     check_mode: yes
     register: marcomc_d79da5d_presence
     failed_when: marcomc_d79da5d_presence.changed
