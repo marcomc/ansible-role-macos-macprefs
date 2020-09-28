@@ -13,7 +13,7 @@
     failed_when: no
 
   - include_tasks: patch-with-marcomc-d79da5d.yml
-    when: macprefs_version.stdout in search('10.0.26')
+    when: macprefs_version.stdout | regex_search('1.0.26')
 
   - name: User specific tasks
     block:
