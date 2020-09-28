@@ -1,5 +1,0 @@
----
-- name: load LaunchAgent
-  command: launchctl load "/Users/{{ target_user_id }}/Library/LaunchAgents/{{ macprefs_launch_agent }}.plist"
-  ignore_errors: yes
-  when: "{{ target_user_id == ansible_user_id }}"

@@ -1,0 +1,6 @@
+---
+- name: Install Macprefs Cron job
+  cron:
+    name: yum autoupdate
+    minute: "0/{{ macprefs_regular_backup|int }}"
+    job: "MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir }}' /usr/local/bin/macprefs backup 1>&2 2> {{ macprefs_log }}"
