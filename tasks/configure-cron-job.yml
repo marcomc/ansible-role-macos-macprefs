@@ -3,4 +3,4 @@
   cron:
     name: yum autoupdate
     minute: "0/{{ macprefs_regular_backup|int }}"
-    job: "MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir }}' /usr/local/bin/macprefs backup > {{ macprefs_log }}" 2>&1
+    job: "MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir }}' /usr/local/bin/macprefs -v backup > {{ macprefs_log }} 2>&1"
