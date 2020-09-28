@@ -4,11 +4,11 @@
     path: '{{ item }}'
   loop:
     - "{{ macprefs_launch_agent }}.plist"
-  register: macprefs_launch_agent
+  register: macprefs_launch_agent_file
 
-- name: macprefs_launch_agent stats
+- name: macprefs_launch_agent_file stats
   debug:
-    var: macprefs_launch_agent
+    var: macprefs_launch_agent_file.results[0]
   when: verbose | bool
 
 - name: try to export MACPREFS_BACKUP_DIR
@@ -16,16 +16,13 @@
 
 - name: Install Macprefs LaunchAgent
   template:
-    src: picture.dsimport.j2
-    dest: "{{ item }}"
-    mode: 0755
+    src: com.github.clintmod.macprefs.plist.j2
+    dest: "/Users/{{ target_user_id }}/Library/LaunchAgents/{{ macprefs_launch_agent }}.plist"
+    mode: 0600
   vars:
     launch_agent_name: "{{ macprefs_launch_agent }}"
     regular_backup_interval_seconds: "{{ macprefs_regular_backup|int }}"
   when:
-    - macprefs_launch_agent.stat.isreg is defined
-    - macprefs_launch_agent.stat.isreg
+    - not macprefs_launch_agent_file.results[0].stat.exists|default(no)|bool
   notify:
     - load LaunchAgent
-    - restart launchd
-...

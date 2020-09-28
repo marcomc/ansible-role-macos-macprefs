@@ -1,6 +1,5 @@
 ---
 - name: load LaunchAgent
-  command: launchctl load "/Users/{{ target_user_id }}/Library/LaunchAgents/{{ com.github.clintmod.macprefs }}.plist"
+  command: launchctl load "/Users/{{ target_user_id }}/Library/LaunchAgents/{{ macprefs_launch_agent }}.plist"
   ignore_errors: yes
-  become: "{{ target_user_id != ansible_user_id }}"
-  become_user: "{{ target_user_id }}"
+  when: "{{ target_user_id == ansible_user_id }}"

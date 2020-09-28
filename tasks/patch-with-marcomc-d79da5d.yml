@@ -19,4 +19,10 @@
     patch:
       src: macprefs-1.0.26-marcomc-d79da5d.patch
       basedir: "{{ macprefs_bin_path }}"
-      strip: 1
+      strip: 0
+    register: patch_result
+
+  - name: patch_result
+    debug:
+      var: patch_result
+    when: verbose|bool
