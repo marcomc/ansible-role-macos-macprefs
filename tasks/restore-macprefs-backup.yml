@@ -6,7 +6,7 @@
   register: macprefs_backup
 
 - name: Run Macprefs restore if MacPref Backup dir '{{ macprefs_backup_dir }}' is present.
-  shell: $(command -v macprefs) restore backup 1>&2 2> "{{ macprefs_log }}"
+  shell: $(command -v macprefs) restore backup > {{ macprefs_log }}" 2>&1
   environment:
     MACPREFS_BACKUP_DIR: "{{ macprefs_backup_dir | expanduser }}"
   when: macprefs_backup.stat.isdir is defined and macprefs_backup.stat.isdir
