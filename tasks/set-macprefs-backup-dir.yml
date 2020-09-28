@@ -1,0 +1,39 @@
+---
+- block:
+  - name: Retrive user's default shell
+    shell: dscl . -read /Users/{{ target_user_id }} UserShell | sed 's/ //g' | cut -d ':' -f2
+    register: command_result
+
+  - name: User's default shell
+    set_fact:
+      target_user_id_default_shell: "{{ item  }}"
+    loop:
+      - "{{ command_result.stdout | basename }}"
+  when:
+    - target_user_id_default_shell is not defined or target_user_id_default_shell | length == 0
+    - not macprefs_update_for_all_shell_types|bool
+
+- name: Set 'MACPREFS_BACKUP_DIR' in the user's {{ target_user_id_default_shell }} config
+  lineinfile:
+    path: "/Users/{{ target_user_id }}/{{ item.config_file }}"
+    state: present
+    regexp: '^.*MACPREFS_BACKUP_DIR.*$'
+    line: "{{ item.line }}"
+    create: yes
+    owner: "{{ target_user_id }}"
+    group: 'staff'
+    mode: 0600
+  loop:
+    - shell_name: 'bash'
+      config_file: ".bashrc"
+      line: "export MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir | expanduser }}'"
+
+    - shell_name: 'zsh'
+      config_file: ".zshrc"
+      line: "export MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir | expanduser }}'"
+
+    - shell_name: 'fish'
+      config_file: ".config/fish/config.fish"
+      line: "set -gx MACPREFS_BACKUP_DIR '{{ macprefs_backup_dir | expanduser }}'"
+  when: item.shell_name == target_user_id_default_shell or macprefs_update_for_all_shell_types|bool
+...

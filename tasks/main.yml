@@ -1,0 +1,27 @@
+- name: FATAL
+  fail: msg="This role is only compatible with macOS"
+  when: ansible_facts['os_family'] != 'Darwin'
+
+- name: Setup macprefs
+  block:
+  - include_tasks: install-macprefs.yml
+
+  - name: Get macprefs version
+    command: "macprefs --version"
+    register: macprefs_version
+    changed_when: no
+    failed_when: no
+
+  - include_tasks: patch-with-marcomc-d79da5d.yml
+    when: macprefs_version.stdout in search('10.0.26')
+
+  - name: User specific tasks
+    block:
+    - include_tasks: set-macprefs-backup-dir.yml
+    - include_tasks: configure-launch-agent.yml
+      when: macprefs_regular_backup|int > 0
+    # - include_tasks: restore-macprefs-backup.yml
+    become: "{{ target_user_id != ansible_user_id }}"
+    become_user: "{{ target_user_id }}"
+  # end block
+  when: ansible_facts['os_family'] == 'Darwin'

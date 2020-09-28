@@ -1,0 +1,21 @@
+---
+- name: Define the full macprefs Installer path
+  set_fact:
+    macprefs_bin_path: '/usr/local/Cellar/macprefs/1.0.26/bin/'
+
+- name: Fails if not patched, and trigger 'rescue' that will patch
+  block:
+  - name: Verify if macpref 1.0.26 is already patched with 'marcomc-d79da5d'
+    lineinfile:
+      dest: "{{ macprefs_bin_path }}/version.py"
+      line: 'marcomc-d79da5d'
+    check_mode: yes
+    register: marcomc_d79da5d_presence
+    failed_when: marcomc_d79da5d_presence.changed
+
+  rescue:
+  - name: Apply patch to macprefs 1.0.26 to support Python3
+    patch:
+      src: macprefs-1.0.26-marcomc-d79da5d.patch
+      basedir: "{{ macprefs_bin_path }}"
+      strip: 1

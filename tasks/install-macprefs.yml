@@ -1,0 +1,13 @@
+---
+# If the user installs macprefs through homebrew the path is different.
+- name: Look for Macprefs.
+  command: command -v macprefs
+  register: macprefs_which_result
+  changed_when: false
+  ignore_errors: yes
+
+- name: Make sure Macprefs is installed with Homebrew.
+  homebrew:
+    name: clintmod/formulas/macprefs
+    state: present
+  when: macprefs_which_result.rc != 0

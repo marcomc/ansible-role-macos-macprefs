@@ -1,0 +1,1950 @@
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/COMMIT_EDITMSG ./macprefs/.git/COMMIT_EDITMSG
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/COMMIT_EDITMSG	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/COMMIT_EDITMSG	2020-08-14 19:28:02.000000000 -0300
+@@ -0,0 +1 @@
++double quote name argument for finder
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/HEAD ./macprefs/.git/HEAD
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/HEAD	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/HEAD	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1 @@
++ref: refs/heads/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/config ./macprefs/.git/config
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/config	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/config	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1,13 @@
++[core]
++	repositoryformatversion = 0
++	filemode = true
++	bare = false
++	logallrefupdates = true
++	ignorecase = true
++	precomposeunicode = true
++[remote "origin"]
++	url = git@github.com:marcomc/macprefs.git
++	fetch = +refs/heads/*:refs/remotes/origin/*
++[branch "master"]
++	remote = origin
++	merge = refs/heads/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/description ./macprefs/.git/description
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/description	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/description	2020-08-14 14:43:30.000000000 -0300
+@@ -0,0 +1 @@
++Unnamed repository; edit this file 'description' to name the repository.
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/applypatch-msg.sample ./macprefs/.git/hooks/applypatch-msg.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/applypatch-msg.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/applypatch-msg.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,15 @@
++#!/bin/sh
++#
++# An example hook script to check the commit log message taken by
++# applypatch from an e-mail message.
++#
++# The hook should exit with non-zero status after issuing an
++# appropriate message if it wants to stop the commit.  The hook is
++# allowed to edit the commit message file.
++#
++# To enable this hook, rename this file to "applypatch-msg".
++
++. git-sh-setup
++commitmsg="$(git rev-parse --git-path hooks/commit-msg)"
++test -x "$commitmsg" && exec "$commitmsg" ${1+"$@"}
++:
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/commit-msg.sample ./macprefs/.git/hooks/commit-msg.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/commit-msg.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/commit-msg.sample	2020-08-14 14:43:30.000000000 -0300
+@@ -0,0 +1,24 @@
++#!/bin/sh
++#
++# An example hook script to check the commit log message.
++# Called by "git commit" with one argument, the name of the file
++# that has the commit message.  The hook should exit with non-zero
++# status after issuing an appropriate message if it wants to stop the
++# commit.  The hook is allowed to edit the commit message file.
++#
++# To enable this hook, rename this file to "commit-msg".
++
++# Uncomment the below to add a Signed-off-by line to the message.
++# Doing this in a hook is a bad idea in general, but the prepare-commit-msg
++# hook is more suited to it.
++#
++# SOB=$(git var GIT_AUTHOR_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
++# grep -qs "^$SOB" "$1" || echo "$SOB" >> "$1"
++
++# This example catches duplicate Signed-off-by lines.
++
++test "" = "$(grep '^Signed-off-by: ' "$1" |
++	 sort | uniq -c | sed -e '/^[ 	]*1[ 	]/d')" || {
++	echo >&2 Duplicate Signed-off-by lines.
++	exit 1
++}
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/fsmonitor-watchman.sample ./macprefs/.git/hooks/fsmonitor-watchman.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/fsmonitor-watchman.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/fsmonitor-watchman.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,173 @@
++#!/usr/bin/perl
++
++use strict;
++use warnings;
++use IPC::Open2;
++
++# An example hook script to integrate Watchman
++# (https://facebook.github.io/watchman/) with git to speed up detecting
++# new and modified files.
++#
++# The hook is passed a version (currently 2) and last update token
++# formatted as a string and outputs to stdout a new update token and
++# all files that have been modified since the update token. Paths must
++# be relative to the root of the working tree and separated by a single NUL.
++#
++# To enable this hook, rename this file to "query-watchman" and set
++# 'git config core.fsmonitor .git/hooks/query-watchman'
++#
++my ($version, $last_update_token) = @ARGV;
++
++# Uncomment for debugging
++# print STDERR "$0 $version $last_update_token\n";
++
++# Check the hook interface version
++if ($version ne 2) {
++	die "Unsupported query-fsmonitor hook version '$version'.\n" .
++	    "Falling back to scanning...\n";
++}
++
++my $git_work_tree = get_working_dir();
++
++my $retry = 1;
++
++my $json_pkg;
++eval {
++	require JSON::XS;
++	$json_pkg = "JSON::XS";
++	1;
++} or do {
++	require JSON::PP;
++	$json_pkg = "JSON::PP";
++};
++
++launch_watchman();
++
++sub launch_watchman {
++	my $o = watchman_query();
++	if (is_work_tree_watched($o)) {
++		output_result($o->{clock}, @{$o->{files}});
++	}
++}
++
++sub output_result {
++	my ($clockid, @files) = @_;
++
++	# Uncomment for debugging watchman output
++	# open (my $fh, ">", ".git/watchman-output.out");
++	# binmode $fh, ":utf8";
++	# print $fh "$clockid\n@files\n";
++	# close $fh;
++
++	binmode STDOUT, ":utf8";
++	print $clockid;
++	print "\0";
++	local $, = "\0";
++	print @files;
++}
++
++sub watchman_clock {
++	my $response = qx/watchman clock "$git_work_tree"/;
++	die "Failed to get clock id on '$git_work_tree'.\n" .
++		"Falling back to scanning...\n" if $? != 0;
++
++	return $json_pkg->new->utf8->decode($response);
++}
++
++sub watchman_query {
++	my $pid = open2(\*CHLD_OUT, \*CHLD_IN, 'watchman -j --no-pretty')
++	or die "open2() failed: $!\n" .
++	"Falling back to scanning...\n";
++
++	# In the query expression below we're asking for names of files that
++	# changed since $last_update_token but not from the .git folder.
++	#
++	# To accomplish this, we're using the "since" generator to use the
++	# recency index to select candidate nodes and "fields" to limit the
++	# output to file names only. Then we're using the "expression" term to
++	# further constrain the results.
++	if (substr($last_update_token, 0, 1) eq "c") {
++		$last_update_token = "\"$last_update_token\"";
++	}
++	my $query = <<"	END";
++		["query", "$git_work_tree", {
++			"since": $last_update_token,
++			"fields": ["name"],
++			"expression": ["not", ["dirname", ".git"]]
++		}]
++	END
++
++	# Uncomment for debugging the watchman query
++	# open (my $fh, ">", ".git/watchman-query.json");
++	# print $fh $query;
++	# close $fh;
++
++	print CHLD_IN $query;
++	close CHLD_IN;
++	my $response = do {local $/; <CHLD_OUT>};
++
++	# Uncomment for debugging the watch response
++	# open ($fh, ">", ".git/watchman-response.json");
++	# print $fh $response;
++	# close $fh;
++
++	die "Watchman: command returned no output.\n" .
++	"Falling back to scanning...\n" if $response eq "";
++	die "Watchman: command returned invalid output: $response\n" .
++	"Falling back to scanning...\n" unless $response =~ /^\{/;
++
++	return $json_pkg->new->utf8->decode($response);
++}
++
++sub is_work_tree_watched {
++	my ($output) = @_;
++	my $error = $output->{error};
++	if ($retry > 0 and $error and $error =~ m/unable to resolve root .* directory (.*) is not watched/) {
++		$retry--;
++		my $response = qx/watchman watch "$git_work_tree"/;
++		die "Failed to make watchman watch '$git_work_tree'.\n" .
++		    "Falling back to scanning...\n" if $? != 0;
++		$output = $json_pkg->new->utf8->decode($response);
++		$error = $output->{error};
++		die "Watchman: $error.\n" .
++		"Falling back to scanning...\n" if $error;
++
++		# Uncomment for debugging watchman output
++		# open (my $fh, ">", ".git/watchman-output.out");
++		# close $fh;
++
++		# Watchman will always return all files on the first query so
++		# return the fast "everything is dirty" flag to git and do the
++		# Watchman query just to get it over with now so we won't pay
++		# the cost in git to look up each individual file.
++		my $o = watchman_clock();
++		$error = $output->{error};
++
++		die "Watchman: $error.\n" .
++		"Falling back to scanning...\n" if $error;
++
++		output_result($o->{clock}, ("/"));
++		$last_update_token = $o->{clock};
++
++		eval { launch_watchman() };
++		return 0;
++	}
++
++	die "Watchman: $error.\n" .
++	"Falling back to scanning...\n" if $error;
++
++	return 1;
++}
++
++sub get_working_dir {
++	my $working_dir;
++	if ($^O =~ 'msys' || $^O =~ 'cygwin') {
++		$working_dir = Win32::GetCwd();
++		$working_dir =~ tr/\\/\//;
++	} else {
++		require Cwd;
++		$working_dir = Cwd::cwd();
++	}
++
++	return $working_dir;
++}
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update 2.sample ./macprefs/.git/hooks/post-update 2.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update 2.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/post-update 2.sample	2020-08-05 23:30:25.000000000 -0300
+@@ -0,0 +1,8 @@
++#!/bin/sh
++#
++# An example hook script to prepare a packed repository for use over
++# dumb transports.
++#
++# To enable this hook, rename this file to "post-update".
++
++exec git update-server-info
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update.sample ./macprefs/.git/hooks/post-update.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/post-update.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/post-update.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,8 @@
++#!/bin/sh
++#
++# An example hook script to prepare a packed repository for use over
++# dumb transports.
++#
++# To enable this hook, rename this file to "post-update".
++
++exec git update-server-info
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch 2.sample ./macprefs/.git/hooks/pre-applypatch 2.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch 2.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-applypatch 2.sample	2020-08-05 23:30:25.000000000 -0300
+@@ -0,0 +1,14 @@
++#!/bin/sh
++#
++# An example hook script to verify what is about to be committed
++# by applypatch from an e-mail message.
++#
++# The hook should exit with non-zero status after issuing an
++# appropriate message if it wants to stop the commit.
++#
++# To enable this hook, rename this file to "pre-applypatch".
++
++. git-sh-setup
++precommit="$(git rev-parse --git-path hooks/pre-commit)"
++test -x "$precommit" && exec "$precommit" ${1+"$@"}
++:
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch.sample ./macprefs/.git/hooks/pre-applypatch.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-applypatch.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-applypatch.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,14 @@
++#!/bin/sh
++#
++# An example hook script to verify what is about to be committed
++# by applypatch from an e-mail message.
++#
++# The hook should exit with non-zero status after issuing an
++# appropriate message if it wants to stop the commit.
++#
++# To enable this hook, rename this file to "pre-applypatch".
++
++. git-sh-setup
++precommit="$(git rev-parse --git-path hooks/pre-commit)"
++test -x "$precommit" && exec "$precommit" ${1+"$@"}
++:
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-commit.sample ./macprefs/.git/hooks/pre-commit.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-commit.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-commit.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,49 @@
++#!/bin/sh
++#
++# An example hook script to verify what is about to be committed.
++# Called by "git commit" with no arguments.  The hook should
++# exit with non-zero status after issuing an appropriate message if
++# it wants to stop the commit.
++#
++# To enable this hook, rename this file to "pre-commit".
++
++if git rev-parse --verify HEAD >/dev/null 2>&1
++then
++	against=HEAD
++else
++	# Initial commit: diff against an empty tree object
++	against=$(git hash-object -t tree /dev/null)
++fi
++
++# If you want to allow non-ASCII filenames set this variable to true.
++allownonascii=$(git config --type=bool hooks.allownonascii)
++
++# Redirect output to stderr.
++exec 1>&2
++
++# Cross platform projects tend to avoid non-ASCII filenames; prevent
++# them from being added to the repository. We exploit the fact that the
++# printable range starts at the space character and ends with tilde.
++if [ "$allownonascii" != "true" ] &&
++	# Note that the use of brackets around a tr range is ok here, (it's
++	# even required, for portability to Solaris 10's /usr/bin/tr), since
++	# the square bracket bytes happen to fall in the designated range.
++	test $(git diff --cached --name-only --diff-filter=A -z $against |
++	  LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
++then
++	cat <<\EOF
++Error: Attempt to add a non-ASCII file name.
++
++This can cause problems if you want to work with people on other platforms.
++
++To be portable it is advisable to rename the file.
++
++If you know what you are doing you can disable this check using:
++
++  git config hooks.allownonascii true
++EOF
++	exit 1
++fi
++
++# If there are whitespace errors, print the offending file names and fail.
++exec git diff-index --check --cached $against --
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit 2.sample ./macprefs/.git/hooks/pre-merge-commit 2.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit 2.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-merge-commit 2.sample	2020-08-05 23:30:25.000000000 -0300
+@@ -0,0 +1,13 @@
++#!/bin/sh
++#
++# An example hook script to verify what is about to be committed.
++# Called by "git merge" with no arguments.  The hook should
++# exit with non-zero status after issuing an appropriate message to
++# stderr if it wants to stop the merge commit.
++#
++# To enable this hook, rename this file to "pre-merge-commit".
++
++. git-sh-setup
++test -x "$GIT_DIR/hooks/pre-commit" &&
++        exec "$GIT_DIR/hooks/pre-commit"
++:
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit.sample ./macprefs/.git/hooks/pre-merge-commit.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-merge-commit.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-merge-commit.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,13 @@
++#!/bin/sh
++#
++# An example hook script to verify what is about to be committed.
++# Called by "git merge" with no arguments.  The hook should
++# exit with non-zero status after issuing an appropriate message to
++# stderr if it wants to stop the merge commit.
++#
++# To enable this hook, rename this file to "pre-merge-commit".
++
++. git-sh-setup
++test -x "$GIT_DIR/hooks/pre-commit" &&
++        exec "$GIT_DIR/hooks/pre-commit"
++:
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-push.sample ./macprefs/.git/hooks/pre-push.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-push.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-push.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,53 @@
++#!/bin/sh
++
++# An example hook script to verify what is about to be pushed.  Called by "git
++# push" after it has checked the remote status, but before anything has been
++# pushed.  If this script exits with a non-zero status nothing will be pushed.
++#
++# This hook is called with the following parameters:
++#
++# $1 -- Name of the remote to which the push is being done
++# $2 -- URL to which the push is being done
++#
++# If pushing without using a named remote those arguments will be equal.
++#
++# Information about the commits which are being pushed is supplied as lines to
++# the standard input in the form:
++#
++#   <local ref> <local sha1> <remote ref> <remote sha1>
++#
++# This sample shows how to prevent push of commits where the log message starts
++# with "WIP" (work in progress).
++
++remote="$1"
++url="$2"
++
++z40=0000000000000000000000000000000000000000
++
++while read local_ref local_sha remote_ref remote_sha
++do
++	if [ "$local_sha" = $z40 ]
++	then
++		# Handle delete
++		:
++	else
++		if [ "$remote_sha" = $z40 ]
++		then
++			# New branch, examine all commits
++			range="$local_sha"
++		else
++			# Update to existing branch, examine new commits
++			range="$remote_sha..$local_sha"
++		fi
++
++		# Check for WIP commit
++		commit=`git rev-list -n 1 --grep '^WIP' "$range"`
++		if [ -n "$commit" ]
++		then
++			echo >&2 "Found WIP commit in $local_ref, not pushing"
++			exit 1
++		fi
++	fi
++done
++
++exit 0
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-rebase.sample ./macprefs/.git/hooks/pre-rebase.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-rebase.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-rebase.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,169 @@
++#!/bin/sh
++#
++# Copyright (c) 2006, 2008 Junio C Hamano
++#
++# The "pre-rebase" hook is run just before "git rebase" starts doing
++# its job, and can prevent the command from running by exiting with
++# non-zero status.
++#
++# The hook is called with the following parameters:
++#
++# $1 -- the upstream the series was forked from.
++# $2 -- the branch being rebased (or empty when rebasing the current branch).
++#
++# This sample shows how to prevent topic branches that are already
++# merged to 'next' branch from getting rebased, because allowing it
++# would result in rebasing already published history.
++
++publish=next
++basebranch="$1"
++if test "$#" = 2
++then
++	topic="refs/heads/$2"
++else
++	topic=`git symbolic-ref HEAD` ||
++	exit 0 ;# we do not interrupt rebasing detached HEAD
++fi
++
++case "$topic" in
++refs/heads/??/*)
++	;;
++*)
++	exit 0 ;# we do not interrupt others.
++	;;
++esac
++
++# Now we are dealing with a topic branch being rebased
++# on top of master.  Is it OK to rebase it?
++
++# Does the topic really exist?
++git show-ref -q "$topic" || {
++	echo >&2 "No such branch $topic"
++	exit 1
++}
++
++# Is topic fully merged to master?
++not_in_master=`git rev-list --pretty=oneline ^master "$topic"`
++if test -z "$not_in_master"
++then
++	echo >&2 "$topic is fully merged to master; better remove it."
++	exit 1 ;# we could allow it, but there is no point.
++fi
++
++# Is topic ever merged to next?  If so you should not be rebasing it.
++only_next_1=`git rev-list ^master "^$topic" ${publish} | sort`
++only_next_2=`git rev-list ^master           ${publish} | sort`
++if test "$only_next_1" = "$only_next_2"
++then
++	not_in_topic=`git rev-list "^$topic" master`
++	if test -z "$not_in_topic"
++	then
++		echo >&2 "$topic is already up to date with master"
++		exit 1 ;# we could allow it, but there is no point.
++	else
++		exit 0
++	fi
++else
++	not_in_next=`git rev-list --pretty=oneline ^${publish} "$topic"`
++	/usr/bin/perl -e '
++		my $topic = $ARGV[0];
++		my $msg = "* $topic has commits already merged to public branch:\n";
++		my (%not_in_next) = map {
++			/^([0-9a-f]+) /;
++			($1 => 1);
++		} split(/\n/, $ARGV[1]);
++		for my $elem (map {
++				/^([0-9a-f]+) (.*)$/;
++				[$1 => $2];
++			} split(/\n/, $ARGV[2])) {
++			if (!exists $not_in_next{$elem->[0]}) {
++				if ($msg) {
++					print STDERR $msg;
++					undef $msg;
++				}
++				print STDERR " $elem->[1]\n";
++			}
++		}
++	' "$topic" "$not_in_next" "$not_in_master"
++	exit 1
++fi
++
++<<\DOC_END
++
++This sample hook safeguards topic branches that have been
++published from being rewound.
++
++The workflow assumed here is:
++
++ * Once a topic branch forks from "master", "master" is never
++   merged into it again (either directly or indirectly).
++
++ * Once a topic branch is fully cooked and merged into "master",
++   it is deleted.  If you need to build on top of it to correct
++   earlier mistakes, a new topic branch is created by forking at
++   the tip of the "master".  This is not strictly necessary, but
++   it makes it easier to keep your history simple.
++
++ * Whenever you need to test or publish your changes to topic
++   branches, merge them into "next" branch.
++
++The script, being an example, hardcodes the publish branch name
++to be "next", but it is trivial to make it configurable via
++$GIT_DIR/config mechanism.
++
++With this workflow, you would want to know:
++
++(1) ... if a topic branch has ever been merged to "next".  Young
++    topic branches can have stupid mistakes you would rather
++    clean up before publishing, and things that have not been
++    merged into other branches can be easily rebased without
++    affecting other people.  But once it is published, you would
++    not want to rewind it.
++
++(2) ... if a topic branch has been fully merged to "master".
++    Then you can delete it.  More importantly, you should not
++    build on top of it -- other people may already want to
++    change things related to the topic as patches against your
++    "master", so if you need further changes, it is better to
++    fork the topic (perhaps with the same name) afresh from the
++    tip of "master".
++
++Let's look at this example:
++
++		   o---o---o---o---o---o---o---o---o---o "next"
++		  /       /           /           /
++		 /   a---a---b A     /           /
++		/   /               /           /
++	       /   /   c---c---c---c B         /
++	      /   /   /             \         /
++	     /   /   /   b---b C     \       /
++	    /   /   /   /             \     /
++    ---o---o---o---o---o---o---o---o---o---o---o "master"
++
++
++A, B and C are topic branches.
++
++ * A has one fix since it was merged up to "next".
++
++ * B has finished.  It has been fully merged up to "master" and "next",
++   and is ready to be deleted.
++
++ * C has not merged to "next" at all.
++
++We would want to allow C to be rebased, refuse A, and encourage
++B to be deleted.
++
++To compute (1):
++
++	git rev-list ^master ^topic next
++	git rev-list ^master        next
++
++	if these match, topic has not merged in next at all.
++
++To compute (2):
++
++	git rev-list master..topic
++
++	if this is empty, it is fully merged to "master".
++
++DOC_END
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-receive.sample ./macprefs/.git/hooks/pre-receive.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/pre-receive.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/pre-receive.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,24 @@
++#!/bin/sh
++#
++# An example hook script to make use of push options.
++# The example simply echoes all push options that start with 'echoback='
++# and rejects all pushes when the "reject" push option is used.
++#
++# To enable this hook, rename this file to "pre-receive".
++
++if test -n "$GIT_PUSH_OPTION_COUNT"
++then
++	i=0
++	while test "$i" -lt "$GIT_PUSH_OPTION_COUNT"
++	do
++		eval "value=\$GIT_PUSH_OPTION_$i"
++		case "$value" in
++		echoback=*)
++			echo "echo from the pre-receive-hook: ${value#*=}" >&2
++			;;
++		reject)
++			exit 1
++		esac
++		i=$((i + 1))
++	done
++fi
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/prepare-commit-msg.sample ./macprefs/.git/hooks/prepare-commit-msg.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/prepare-commit-msg.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/prepare-commit-msg.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,42 @@
++#!/bin/sh
++#
++# An example hook script to prepare the commit log message.
++# Called by "git commit" with the name of the file that has the
++# commit message, followed by the description of the commit
++# message's source.  The hook's purpose is to edit the commit
++# message file.  If the hook fails with a non-zero status,
++# the commit is aborted.
++#
++# To enable this hook, rename this file to "prepare-commit-msg".
++
++# This hook includes three examples. The first one removes the
++# "# Please enter the commit message..." help message.
++#
++# The second includes the output of "git diff --name-status -r"
++# into the message, just before the "git status" output.  It is
++# commented because it doesn't cope with --amend or with squashed
++# commits.
++#
++# The third example adds a Signed-off-by line to the message, that can
++# still be edited.  This is rarely a good idea.
++
++COMMIT_MSG_FILE=$1
++COMMIT_SOURCE=$2
++SHA1=$3
++
++/usr/bin/perl -i.bak -ne 'print unless(m/^. Please enter the commit message/..m/^#$/)' "$COMMIT_MSG_FILE"
++
++# case "$COMMIT_SOURCE,$SHA1" in
++#  ,|template,)
++#    /usr/bin/perl -i.bak -pe '
++#       print "\n" . `git diff --cached --name-status -r`
++# 	 if /^#/ && $first++ == 0' "$COMMIT_MSG_FILE" ;;
++#  *) ;;
++# esac
++
++# SOB=$(git var GIT_COMMITTER_IDENT | sed -n 's/^\(.*>\).*$/Signed-off-by: \1/p')
++# git interpret-trailers --in-place --trailer "$SOB" "$COMMIT_MSG_FILE"
++# if test -z "$COMMIT_SOURCE"
++# then
++#   /usr/bin/perl -i.bak -pe 'print "\n" if !$first_line++' "$COMMIT_MSG_FILE"
++# fi
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/update.sample ./macprefs/.git/hooks/update.sample
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/hooks/update.sample	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/hooks/update.sample	2020-08-14 14:43:31.000000000 -0300
+@@ -0,0 +1,128 @@
++#!/bin/sh
++#
++# An example hook script to block unannotated tags from entering.
++# Called by "git receive-pack" with arguments: refname sha1-old sha1-new
++#
++# To enable this hook, rename this file to "update".
++#
++# Config
++# ------
++# hooks.allowunannotated
++#   This boolean sets whether unannotated tags will be allowed into the
++#   repository.  By default they won't be.
++# hooks.allowdeletetag
++#   This boolean sets whether deleting tags will be allowed in the
++#   repository.  By default they won't be.
++# hooks.allowmodifytag
++#   This boolean sets whether a tag may be modified after creation. By default
++#   it won't be.
++# hooks.allowdeletebranch
++#   This boolean sets whether deleting branches will be allowed in the
++#   repository.  By default they won't be.
++# hooks.denycreatebranch
++#   This boolean sets whether remotely creating branches will be denied
++#   in the repository.  By default this is allowed.
++#
++
++# --- Command line
++refname="$1"
++oldrev="$2"
++newrev="$3"
++
++# --- Safety check
++if [ -z "$GIT_DIR" ]; then
++	echo "Don't run this script from the command line." >&2
++	echo " (if you want, you could supply GIT_DIR then run" >&2
++	echo "  $0 <ref> <oldrev> <newrev>)" >&2
++	exit 1
++fi
++
++if [ -z "$refname" -o -z "$oldrev" -o -z "$newrev" ]; then
++	echo "usage: $0 <ref> <oldrev> <newrev>" >&2
++	exit 1
++fi
++
++# --- Config
++allowunannotated=$(git config --type=bool hooks.allowunannotated)
++allowdeletebranch=$(git config --type=bool hooks.allowdeletebranch)
++denycreatebranch=$(git config --type=bool hooks.denycreatebranch)
++allowdeletetag=$(git config --type=bool hooks.allowdeletetag)
++allowmodifytag=$(git config --type=bool hooks.allowmodifytag)
++
++# check for no description
++projectdesc=$(sed -e '1q' "$GIT_DIR/description")
++case "$projectdesc" in
++"Unnamed repository"* | "")
++	echo "*** Project description file hasn't been set" >&2
++	exit 1
++	;;
++esac
++
++# --- Check types
++# if $newrev is 0000...0000, it's a commit to delete a ref.
++zero="0000000000000000000000000000000000000000"
++if [ "$newrev" = "$zero" ]; then
++	newrev_type=delete
++else
++	newrev_type=$(git cat-file -t $newrev)
++fi
++
++case "$refname","$newrev_type" in
++	refs/tags/*,commit)
++		# un-annotated tag
++		short_refname=${refname##refs/tags/}
++		if [ "$allowunannotated" != "true" ]; then
++			echo "*** The un-annotated tag, $short_refname, is not allowed in this repository" >&2
++			echo "*** Use 'git tag [ -a | -s ]' for tags you want to propagate." >&2
++			exit 1
++		fi
++		;;
++	refs/tags/*,delete)
++		# delete tag
++		if [ "$allowdeletetag" != "true" ]; then
++			echo "*** Deleting a tag is not allowed in this repository" >&2
++			exit 1
++		fi
++		;;
++	refs/tags/*,tag)
++		# annotated tag
++		if [ "$allowmodifytag" != "true" ] && git rev-parse $refname > /dev/null 2>&1
++		then
++			echo "*** Tag '$refname' already exists." >&2
++			echo "*** Modifying a tag is not allowed in this repository." >&2
++			exit 1
++		fi
++		;;
++	refs/heads/*,commit)
++		# branch
++		if [ "$oldrev" = "$zero" -a "$denycreatebranch" = "true" ]; then
++			echo "*** Creating a branch is not allowed in this repository" >&2
++			exit 1
++		fi
++		;;
++	refs/heads/*,delete)
++		# delete branch
++		if [ "$allowdeletebranch" != "true" ]; then
++			echo "*** Deleting a branch is not allowed in this repository" >&2
++			exit 1
++		fi
++		;;
++	refs/remotes/*,commit)
++		# tracking branch
++		;;
++	refs/remotes/*,delete)
++		# delete tracking branch
++		if [ "$allowdeletebranch" != "true" ]; then
++			echo "*** Deleting a tracking branch is not allowed in this repository" >&2
++			exit 1
++		fi
++		;;
++	*)
++		# Anything else (is there anything else?)
++		echo "*** Update hook: unknown type of update to ref $refname of type $newrev_type" >&2
++		exit 1
++		;;
++esac
++
++# --- Finished
++exit 0
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/index and ./macprefs/.git/index differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/info/exclude ./macprefs/.git/info/exclude
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/info/exclude	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/info/exclude	2020-08-14 14:43:30.000000000 -0300
+@@ -0,0 +1,6 @@
++# git ls-files --others --exclude-from=.git/info/exclude
++# Lines that start with '#' are comments.
++# For a project mostly in C, the following would be a good set of
++# exclude patterns (uncomment them if you want to use them):
++# *.[oa]
++# *~
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/HEAD ./macprefs/.git/logs/HEAD
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/HEAD	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/logs/HEAD	2020-08-14 19:28:02.000000000 -0300
+@@ -0,0 +1,2 @@
++0000000000000000000000000000000000000000 8a432f920b2756f91b2424fa300cd94b9f665c8e Marco Massari Calderone <marco@marcomc.com> 1597427020 -0300	clone: from github.com:marcomc/macprefs.git
++8a432f920b2756f91b2424fa300cd94b9f665c8e d79da5d05ebdf7279b1bb53ca29dbad08271f3ad Marco Massari Calderone <marco@marcomc.com> 1597444082 -0300	commit: double quote name argument for finder
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/heads/master ./macprefs/.git/logs/refs/heads/master
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/heads/master	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/logs/refs/heads/master	2020-08-14 19:28:02.000000000 -0300
+@@ -0,0 +1,2 @@
++0000000000000000000000000000000000000000 8a432f920b2756f91b2424fa300cd94b9f665c8e Marco Massari Calderone <marco@marcomc.com> 1597427020 -0300	clone: from github.com:marcomc/macprefs.git
++8a432f920b2756f91b2424fa300cd94b9f665c8e d79da5d05ebdf7279b1bb53ca29dbad08271f3ad Marco Massari Calderone <marco@marcomc.com> 1597444082 -0300	commit: double quote name argument for finder
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/HEAD ./macprefs/.git/logs/refs/remotes/origin/HEAD
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/HEAD	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/logs/refs/remotes/origin/HEAD	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1 @@
++0000000000000000000000000000000000000000 8a432f920b2756f91b2424fa300cd94b9f665c8e Marco Massari Calderone <marco@marcomc.com> 1597427020 -0300	clone: from github.com:marcomc/macprefs.git
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/master ./macprefs/.git/logs/refs/remotes/origin/master
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/logs/refs/remotes/origin/master	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/logs/refs/remotes/origin/master	2020-08-14 20:33:58.000000000 -0300
+@@ -0,0 +1 @@
++8a432f920b2756f91b2424fa300cd94b9f665c8e d79da5d05ebdf7279b1bb53ca29dbad08271f3ad Marco Massari Calderone <marco@marcomc.com> 1597448038 -0300	update by push
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a ./macprefs/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/objects/5f/4233771cc5bc0ed107191dc8e8dfdb9884108a	2020-08-14 19:27:34.000000000 -0300
+@@ -0,0 +1,2 @@
++x�S�n�0L��X����:�2b�� �#H�%-e:I���>�ǝr1vԐ��fgFâ�t{����z�@�F[�t~����Su|��,�����*��Z	9�f��Ü���(Тѱ����a����F�U�apyJ�r9a�90!��tu���#sO�,UUM( Om��
++�#нTB7�B7	.$��\hz)h����T:���2��,f49:����ٶ�ؠ7�u�G[�[����K���;�;�����uH����Hu�L���#��^9�� zG���������_�۔E���6J�G���j"b&u����=�=��r{�=n�*�>g�I��k�)&d|I��Q�����4*K�EP�i�ٿ��~{���^W�&�TIgT��׻K�Í?$	n_����_ՉZ2RX�5�~��L�@�����ۀ�NϥG�~�B�E��d���m�
+\ No newline at end of file
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/a6/60b81a5f2a69f4a431a43e0fb11d7adf278516 and ./macprefs/.git/objects/a6/60b81a5f2a69f4a431a43e0fb11d7adf278516 differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad ./macprefs/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/objects/d7/9da5d05ebdf7279b1bb53ca29dbad08271f3ad	2020-08-14 19:28:02.000000000 -0300
+@@ -0,0 +1,2 @@
++x��MnC!���s�V0�W��J]�̴O
++����_�+da/l��\zk��63��:GCN�|K�d�XK6���!:�Օ��*Q���yI&�E+tҺ�ds�]����}��җ��46��K��w�s{_Oo����	ƥ`���]�A��;��U��/��O��ں=~���#�Q�}Q�~X4
+\ No newline at end of file
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.idx and ./macprefs/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.idx differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.pack and ./macprefs/.git/objects/pack/pack-acf0bc506d1e9e25d162f051cb73f1c64fab5d44.pack differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/packed-refs ./macprefs/.git/packed-refs
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/packed-refs	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/packed-refs	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1,30 @@
++# pack-refs with: peeled fully-peeled sorted
++8a432f920b2756f91b2424fa300cd94b9f665c8e refs/remotes/origin/master
++81a34f9b92c599fcd6151bb8640a498b56a86de2 refs/tags/v1.0.0
++55a1da5a87595067d21cf2197487f4939e0155b1 refs/tags/v1.0.1
++ed38ee8dd3bba3eb32f2d245557cb381b7d300bd refs/tags/v1.0.10
++0ee9cd031f165ebde139f162a031a0766424dca0 refs/tags/v1.0.11
++6240258a446c80fe475c3711f361c28018f5cc7b refs/tags/v1.0.12
++dfd23733df180e57284520bad026560a6a0525e6 refs/tags/v1.0.13
++65534513517949e7c1b7b365f4e8047e4636074a refs/tags/v1.0.14
++2dfb5425568c15d5fa6d032ab950777b7c525cc5 refs/tags/v1.0.15
++7b771f2c4b9ddc47eb38412defd3d1457181e372 refs/tags/v1.0.16
++024059237933accd554f31b1ff223a3c83101f21 refs/tags/v1.0.17
++58799e6129aca178552fef26123ac920471feb6f refs/tags/v1.0.18
++52ff78843919873555648f3ef58803b0cf470b51 refs/tags/v1.0.19
++a8a511e169295c72583e85b59119cda79736f3c5 refs/tags/v1.0.2
++f6c75a2046888624b084ab2dc436f72361241e29 refs/tags/v1.0.20
++18d8c67dd485f31a4994e38b83f17d80755be32d refs/tags/v1.0.21
++2b8012f2f43ccafd67683333eaad4bfd87b597f4 refs/tags/v1.0.22
++04f605f8b82f6e8e8f93fb42bdc4020e244c4db5 refs/tags/v1.0.23
++13ad0b9da28bbafb1251ca5b7bd35ab55352bb95 refs/tags/v1.0.24
++1d8e7cd3ebf2be43db34bd2cb9daec62a7ade321 refs/tags/v1.0.25
++0ff09e282002a28ab8d2a826dbb8a764786a3af8 refs/tags/v1.0.26
++a8a511e169295c72583e85b59119cda79736f3c5 refs/tags/v1.0.3
++a8a511e169295c72583e85b59119cda79736f3c5 refs/tags/v1.0.4
++a8a511e169295c72583e85b59119cda79736f3c5 refs/tags/v1.0.4.tar.gz
++d78edb83ce80379be016372d4e69daa4f09ae92f refs/tags/v1.0.5
++efe43e2e2ee7719e5f48956bf7e28e6ce55b9c21 refs/tags/v1.0.6
++ff3150ad5bf0acd44cbcffbe022efb94895ee51e refs/tags/v1.0.7
++64ea81225fabfeeec1aa58ffe68ce9fa0ba30809 refs/tags/v1.0.8
++18e9443dc0a5207d065fb4de5c73d4c7caf02d82 refs/tags/v1.0.9
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/heads/master ./macprefs/.git/refs/heads/master
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/heads/master	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/refs/heads/master	2020-08-14 19:28:02.000000000 -0300
+@@ -0,0 +1 @@
++d79da5d05ebdf7279b1bb53ca29dbad08271f3ad
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/HEAD ./macprefs/.git/refs/remotes/origin/HEAD
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/HEAD	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/refs/remotes/origin/HEAD	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1 @@
++ref: refs/remotes/origin/master
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/master ./macprefs/.git/refs/remotes/origin/master
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.git/refs/remotes/origin/master	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.git/refs/remotes/origin/master	2020-08-14 20:33:58.000000000 -0300
+@@ -0,0 +1 @@
++d79da5d05ebdf7279b1bb53ca29dbad08271f3ad
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.gitignore ./macprefs/.gitignore
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.gitignore	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.gitignore	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1,9 @@
++*.pyc
++__pycache__
++.cache
++cov.xml
++.tmontmp
++.testmondata
++macprefsc
++.coverage
++.pytest_cache
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.pylintrc ./macprefs/.pylintrc
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.pylintrc	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.pylintrc	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1,425 @@
++[MASTER]
++
++# A comma-separated list of package or module names from where C extensions may
++# be loaded. Extensions are loading into the active Python interpreter and may
++# run arbitrary code
++extension-pkg-whitelist=
++
++# Add files or directories to the blacklist. They should be base names, not
++# paths.
++ignore=CVS
++
++# Add files or directories matching the regex patterns to the blacklist. The
++# regex matches against base names, not paths.
++ignore-patterns=
++
++# Python code to execute, usually for sys.path manipulation such as
++# pygtk.require().
++#init-hook=
++
++# Use multiple processes to speed up Pylint.
++jobs=1
++
++# List of plugins (as comma separated values of python modules names) to load,
++# usually to register additional checkers.
++load-plugins=
++
++# Pickle collected data for later comparisons.
++persistent=yes
++
++# Specify a configuration file.
++#rcfile=
++
++# Allow loading of arbitrary C extensions. Extensions are imported into the
++# active Python interpreter and may run arbitrary code.
++unsafe-load-any-extension=no
++
++
++[MESSAGES CONTROL]
++
++# Only show warnings with the listed confidence levels. Leave empty to show
++# all. Valid levels: HIGH, INFERENCE, INFERENCE_FAILURE, UNDEFINED
++confidence=
++
++# Disable the message, report, category or checker with the given id(s). You
++# can either give multiple identifiers separated by comma (,) or put this
++# option multiple times (only on the command line, not in the configuration
++# file where it should appear only once).You can also use "--disable=all" to
++# disable everything first and then reenable specific checks. For example, if
++# you want to run only the similarities checker, you can use "--disable=all
++# --enable=similarities". If you want to run only the classes checker, but have
++# no Warning level messages displayed, use"--disable=all --enable=classes
++# --disable=W"
++disable=print-statement,parameter-unpacking,unpacking-in-except,old-raise-syntax,backtick,long-suffix,old-ne-operator,old-octal-literal,import-star-module-level,raw-checker-failed,bad-inline-option,locally-disabled,locally-enabled,file-ignored,suppressed-message,useless-suppression,deprecated-pragma,apply-builtin,basestring-builtin,buffer-builtin,cmp-builtin,coerce-builtin,execfile-builtin,file-builtin,long-builtin,raw_input-builtin,reduce-builtin,standarderror-builtin,unicode-builtin,xrange-builtin,coerce-method,delslice-method,getslice-method,setslice-method,no-absolute-import,old-division,dict-iter-method,dict-view-method,next-method-called,metaclass-assignment,indexing-exception,raising-string,reload-builtin,oct-method,hex-method,nonzero-method,cmp-method,input-builtin,round-builtin,intern-builtin,unichr-builtin,map-builtin-not-iterating,zip-builtin-not-iterating,range-builtin-not-iterating,filter-builtin-not-iterating,using-cmp-argument,eq-without-hash,div-method,idiv-method,rdiv-method,exception-message-attribute,invalid-str-codec,sys-max-int,bad-python3-import,deprecated-string-function,deprecated-str-translate-call,C0111,C0304,C0103
++
++# Enable the message, report, category or checker with the given id(s). You can
++# either give multiple identifier separated by comma (,) or put this option
++# multiple time (only on the command line, not in the configuration file where
++# it should appear only once). See also the "--disable" option for examples.
++enable=
++
++
++[REPORTS]
++
++# Python expression which should return a note less than 10 (10 is the highest
++# note). You have access to the variables errors warning, statement which
++# respectively contain the number of errors / warnings messages and the total
++# number of statements analyzed. This is used by the global evaluation report
++# (RP0004).
++evaluation=10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)
++
++# Template used to display messages. This is a python new-style format string
++# used to format the message information. See doc for all details
++#msg-template=
++
++# Set the output format. Available formats are text, parseable, colorized, json
++# and msvs (visual studio).You can also give a reporter class, eg
++# mypackage.mymodule.MyReporterClass.
++output-format=text
++
++# Tells whether to display a full report or only the messages
++reports=no
++
++# Activate the evaluation score.
++score=yes
++
++
++[REFACTORING]
++
++# Maximum number of nested blocks for function / method body
++max-nested-blocks=5
++
++
++[LOGGING]
++
++# Logging modules to check that the string format arguments are in logging
++# function parameter format
++logging-modules=logging
++
++
++[SPELLING]
++
++# Spelling dictionary name. Available dictionaries: none. To make it working
++# install python-enchant package.
++spelling-dict=
++
++# List of comma separated words that should not be checked.
++spelling-ignore-words=
++
++# A path to a file that contains private dictionary; one word per line.
++spelling-private-dict-file=
++
++# Tells whether to store unknown words to indicated private dictionary in
++# --spelling-private-dict-file option instead of raising a message.
++spelling-store-unknown-words=no
++
++
++[MISCELLANEOUS]
++
++# List of note tags to take in consideration, separated by a comma.
++notes=FIXME,XXX,TODO
++
++
++[SIMILARITIES]
++
++# Ignore comments when computing similarities.
++ignore-comments=yes
++
++# Ignore docstrings when computing similarities.
++ignore-docstrings=yes
++
++# Ignore imports when computing similarities.
++ignore-imports=no
++
++# Minimum lines number of a similarity.
++min-similarity-lines=4
++
++
++[TYPECHECK]
++
++# List of decorators that produce context managers, such as
++# contextlib.contextmanager. Add to this list to register other decorators that
++# produce valid context managers.
++contextmanager-decorators=contextlib.contextmanager
++
++# List of members which are set dynamically and missed by pylint inference
++# system, and so shouldn't trigger E1101 when accessed. Python regular
++# expressions are accepted.
++generated-members=
++
++# Tells whether missing members accessed in mixin class should be ignored. A
++# mixin class is detected if its name ends with "mixin" (case insensitive).
++ignore-mixin-members=yes
++
++# This flag controls whether pylint should warn about no-member and similar
++# checks whenever an opaque object is returned when inferring. The inference
++# can return multiple potential results while evaluating a Python object, but
++# some branches might not be evaluated, which results in partial inference. In
++# that case, it might be useful to still emit no-member and other checks for
++# the rest of the inferred objects.
++ignore-on-opaque-inference=yes
++
++# List of class names for which member attributes should not be checked (useful
++# for classes with dynamically set attributes). This supports the use of
++# qualified names.
++ignored-classes=optparse.Values,thread._local,_thread._local
++
++# List of module names for which member attributes should not be checked
++# (useful for modules/projects where namespaces are manipulated during runtime
++# and thus existing member attributes cannot be deduced by static analysis. It
++# supports qualified module names, as well as Unix pattern matching.
++ignored-modules=
++
++# Show a hint with possible names when a member name was not found. The aspect
++# of finding the hint is based on edit distance.
++missing-member-hint=yes
++
++# The minimum edit distance a name should have in order to be considered a
++# similar match for a missing member name.
++missing-member-hint-distance=1
++
++# The total number of similar names that should be taken in consideration when
++# showing a hint for a missing member.
++missing-member-max-choices=1
++
++
++[VARIABLES]
++
++# List of additional names supposed to be defined in builtins. Remember that
++# you should avoid to define new builtins when possible.
++additional-builtins=
++
++# Tells whether unused global variables should be treated as a violation.
++allow-global-unused-variables=yes
++
++# List of strings which can identify a callback function by name. A callback
++# name must start or end with one of those strings.
++callbacks=cb_,_cb
++
++# A regular expression matching the name of dummy variables (i.e. expectedly
++# not used).
++dummy-variables-rgx=_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_
++
++# Argument names that match this expression will be ignored. Default to name
++# with leading underscore
++ignored-argument-names=_.*|^ignored_|^unused_
++
++# Tells whether we should check for unused import in __init__ files.
++init-import=no
++
++# List of qualified module names which can have objects that can redefine
++# builtins.
++redefining-builtins-modules=six.moves,future.builtins
++
++
++[FORMAT]
++
++# Expected format of line ending, e.g. empty (any line ending), LF or CRLF.
++expected-line-ending-format=
++
++# Regexp for a line that is allowed to be longer than the limit.
++ignore-long-lines=^\s*(# )?<?https?://\S+>?$
++
++# Number of spaces of indent required inside a hanging  or continued line.
++indent-after-paren=4
++
++# String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
++# tab).
++indent-string='    '
++
++# Maximum number of characters on a single line.
++max-line-length=130
++
++# Maximum number of lines in a module
++max-module-lines=1000
++
++# List of optional constructs for which whitespace checking is disabled. `dict-
++# separator` is used to allow tabulation in dicts, etc.: {1  : 1,\n222: 2}.
++# `trailing-comma` allows a space between comma and closing bracket: (a, ).
++# `empty-line` allows space-only lines.
++no-space-check=trailing-comma,dict-separator
++
++# Allow the body of a class to be on the same line as the declaration if body
++# contains single statement.
++single-line-class-stmt=no
++
++# Allow the body of an if to be on the same line as the test if there is no
++# else.
++single-line-if-stmt=no
++
++
++[BASIC]
++
++# Naming hint for argument names
++argument-name-hint=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Regular expression matching correct argument names
++argument-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Naming hint for attribute names
++attr-name-hint=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Regular expression matching correct attribute names
++attr-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Bad variable names which should always be refused, separated by a comma
++bad-names=foo,bar,baz,toto,tutu,tata
++
++# Naming hint for class attribute names
++class-attribute-name-hint=([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$
++
++# Regular expression matching correct class attribute names
++class-attribute-rgx=([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$
++
++# Naming hint for class names
++class-name-hint=[A-Z_][a-zA-Z0-9]+$
++
++# Regular expression matching correct class names
++class-rgx=[A-Z_][a-zA-Z0-9]+$
++
++# Naming hint for constant names
++const-name-hint=(([A-Z_][A-Z0-9_]*)|(__.*__))$
++
++# Regular expression matching correct constant names
++const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
++
++# Minimum line length for functions/classes that require docstrings, shorter
++# ones are exempt.
++docstring-min-length=-12
++
++# Naming hint for function names
++function-name-hint=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Regular expression matching correct function names
++function-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Good variable names which should always be accepted, separated by a comma
++good-names=i,j,k,ex,Run,_
++
++# Include a hint for the correct naming format with invalid-name
++include-naming-hint=no
++
++# Naming hint for inline iteration names
++inlinevar-name-hint=[A-Za-z_][A-Za-z0-9_]*$
++
++# Regular expression matching correct inline iteration names
++inlinevar-rgx=[A-Za-z_][A-Za-z0-9_]*$
++
++# Naming hint for method names
++method-name-hint=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Regular expression matching correct method names
++method-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Naming hint for module names
++module-name-hint=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
++
++# Regular expression matching correct module names
++module-rgx=(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$
++
++# Colon-delimited sets of names that determine each other's naming style when
++# the name regexes allow several styles.
++name-group=
++
++# Regular expression which should only match function or class names that do
++# not require a docstring.
++no-docstring-rgx=^_
++
++# List of decorators that produce properties, such as abc.abstractproperty. Add
++# to this list to register other decorators that produce valid properties.
++property-classes=abc.abstractproperty
++
++# Naming hint for variable names
++variable-name-hint=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++# Regular expression matching correct variable names
++variable-rgx=(([a-z][a-z0-9_]{2,30})|(_[a-z0-9_]*))$
++
++
++[DESIGN]
++
++# Maximum number of arguments for function / method
++max-args=5
++
++# Maximum number of attributes for a class (see R0902).
++max-attributes=7
++
++# Maximum number of boolean expressions in a if statement
++max-bool-expr=5
++
++# Maximum number of branch for function / method body
++max-branches=12
++
++# Maximum number of locals for function / method body
++max-locals=15
++
++# Maximum number of parents for a class (see R0901).
++max-parents=7
++
++# Maximum number of public methods for a class (see R0904).
++max-public-methods=20
++
++# Maximum number of return / yield for function / method body
++max-returns=6
++
++# Maximum number of statements in function / method body
++max-statements=50
++
++# Minimum number of public methods for a class (see R0903).
++min-public-methods=2
++
++
++[CLASSES]
++
++# List of method names used to declare (i.e. assign) instance attributes.
++defining-attr-methods=__init__,__new__,setUp
++
++# List of member names, which should be excluded from the protected access
++# warning.
++exclude-protected=_asdict,_fields,_replace,_source,_make
++
++# List of valid names for the first argument in a class method.
++valid-classmethod-first-arg=cls
++
++# List of valid names for the first argument in a metaclass class method.
++valid-metaclass-classmethod-first-arg=mcs
++
++
++[IMPORTS]
++
++# Allow wildcard imports from modules that define __all__.
++allow-wildcard-with-all=no
++
++# Analyse import fallback blocks. This can be used to support both Python 2 and
++# 3 compatible code, which means that the block might have code that exists
++# only in one or another interpreter, leading to false positives when analysed.
++analyse-fallback-blocks=no
++
++# Deprecated modules which should not be used, separated by a comma
++deprecated-modules=regsub,TERMIOS,Bastion,rexec
++
++# Create a graph of external dependencies in the given file (report RP0402 must
++# not be disabled)
++ext-import-graph=
++
++# Create a graph of every (i.e. internal and external) dependencies in the
++# given file (report RP0402 must not be disabled)
++import-graph=
++
++# Create a graph of internal dependencies in the given file (report RP0402 must
++# not be disabled)
++int-import-graph=
++
++# Force import order to recognize a module as part of the standard
++# compatibility libraries.
++known-standard-library=
++
++# Force import order to recognize a module as part of a third party library.
++known-third-party=enchant
++
++
++[EXCEPTIONS]
++
++# Exceptions that will emit a warning when being caught. Defaults to
++# "Exception"
++overgeneral-exceptions=Exception
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/settings.json ./macprefs/.vscode/settings.json
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/settings.json	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.vscode/settings.json	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1,35 @@
++{
++"cSpell.words": [
++    "addressbook",
++    "bynens",
++    "chmod",
++    "chown",
++    "clintmod",
++    "dotfiles",
++    "getenv",
++    "getuid",
++    "installable",
++    "isfile",
++    "mackup",
++    "macos",
++    "macprefs",
++    "plist",
++    "prefs",
++    "pylint",
++    "pytest",
++    "readattr",
++    "readextattr",
++    "readsecurity",
++    "recurse",
++    "rsync",
++    "sharedfilelist",
++    "shasum",
++    "subdirs",
++    "subfolders",
++    "symlinks"
++],
++  "python.unitTest.pyTestArgs": [
++    "."
++  ],
++  "python.unitTest.pyTestEnabled": false
++}
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/tasks.json ./macprefs/.vscode/tasks.json
+--- /usr/local/Cellar/macprefs/1.0.26/bin/.vscode/tasks.json	1969-12-31 21:00:00.000000000 -0300
++++ ./macprefs/.vscode/tasks.json	2020-08-14 14:43:40.000000000 -0300
+@@ -0,0 +1,18 @@
++{
++    // See https://go.microsoft.com/fwlink/?LinkId=733558
++    // for the documentation about the tasks.json format
++    "version": "2.0.0",
++    "tasks": [
++        {
++            "label": "Run All Tests with watch",
++            "type": "shell",
++            "command": "ptw  --onfail 'say failed' -- --testmon ",
++            "isBackground": true,
++            "presentation": {
++                "echo":false,
++                "reveal": "never"
++            },
++            "problemMatcher": []
++        }
++    ]
++}
+\ No newline at end of file
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/README.md ./macprefs/README.md
+--- /usr/local/Cellar/macprefs/1.0.26/bin/README.md	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/README.md	2020-08-14 14:43:40.000000000 -0300
+@@ -15,7 +15,7 @@
+ ## Requirements
+
+ - Mac OS X greater than 10.9 (maybe older… didn't test)
+-- Python 2.7 (Installed by default on Mac OS X > 10.6)
++- Python 3.6
+
+ ## Installation
+
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/app_store_preferences.cpython-38.pyc and ./macprefs/__pycache__/app_store_preferences.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/config.cpython-38.pyc and ./macprefs/__pycache__/config.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/dotfiles.cpython-38.pyc and ./macprefs/__pycache__/dotfiles.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/preferences.cpython-38.pyc and ./macprefs/__pycache__/preferences.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/shared_file_lists.cpython-38.pyc and ./macprefs/__pycache__/shared_file_lists.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/ssh_files.cpython-38.pyc and ./macprefs/__pycache__/ssh_files.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/startup_items.cpython-38.pyc and ./macprefs/__pycache__/startup_items.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/system_preferences.cpython-38.pyc and ./macprefs/__pycache__/system_preferences.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/utils.cpython-38.pyc and ./macprefs/__pycache__/utils.cpython-38.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/__pycache__/version.cpython-38.pyc and ./macprefs/__pycache__/version.cpython-38.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.py ./macprefs/app_store_preferences.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/app_store_preferences.py	2020-08-14 14:53:41.000000000 -0300
+@@ -25,7 +25,7 @@
+
+ def build_file_list():
+     source = get_app_store_preferences_dir()
+-    command = 'find ' + source + '*/Data/Library/Preferences -type f -name *.plist'
++    command = 'find ' + source + '*/Data/Library/Preferences -type f -name "*.plisit"'
+     result = execute_shell(command, is_shell=True)
+     files = result.split('\n')
+     return files
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/app_store_preferences.pyc and ./macprefs/app_store_preferences.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/config.pyc and ./macprefs/config.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/dotfiles.pyc and ./macprefs/dotfiles.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs ./macprefs/macprefs
+--- /usr/local/Cellar/macprefs/1.0.26/bin/macprefs	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/macprefs	2020-08-14 14:43:40.000000000 -0300
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ import argparse
+ import sys
+ import logging as log
+@@ -20,7 +20,7 @@
+     ssh_files.backup()
+     preferences.backup()
+     app_store_preferences.backup()
+-    print 'Backup Complete.'
++    print('Backup Complete.')
+
+
+ def restore():
+@@ -31,7 +31,7 @@
+     ssh_files.restore()
+     preferences.restore()
+     app_store_preferences.restore()
+-    print 'Restore Complete.'
++    print('Restore Complete.')
+
+
+ def invoke_func(args):
+@@ -64,7 +64,7 @@
+         parser.print_help()
+         sys.exit(0)
+     args = parser.parse_args()
+-    verbosity = 0 if args.verbose == "None" else args.verbose
++    verbosity = 0 if args.verbose is None else args.verbose
+     configure_logging(verbosity)
+     invoke_func(args)
+
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/macprefs.template.rb ./macprefs/macprefs.template.rb
+--- /usr/local/Cellar/macprefs/1.0.26/bin/macprefs.template.rb	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/macprefs.template.rb	2020-08-14 14:43:40.000000000 -0300
+@@ -6,7 +6,7 @@
+     url "https://github.com/clintmod/macprefs/archive/###version###.tar.gz"
+     sha256 "###sha256###"
+
+-    depends_on :python if MacOS.version <= :snow_leopard
++    depends_on :python3
+
+     def install
+       bin.install Dir["*"]
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/preferences.pyc and ./macprefs/preferences.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/publish.py ./macprefs/publish.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/publish.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/publish.py	2020-08-14 14:43:40.000000000 -0300
+@@ -2,14 +2,16 @@
+ import glob
+ import os
+ import json
+-import urllib2
+-import urllib
++import urllib.request
++import urllib.error
++import urllib.parse
++import base64
+ from utils import execute_shell, is_none_or_empty_string
+ from version import __version__
+
+
+ def check_for_uncommitted_files():
+-    print 'Checking for uncommitted files...'
++    print('Checking for uncommitted files...')
+     result = execute_shell(['git', 'status'])
+     if not 'nothing to commit' in result:
+         raise ValueError(
+@@ -17,49 +19,50 @@
+
+
+ def create_version_tag_and_push(tag):
+-    print 'Tagging git repository with version ' + tag
++    print('Tagging git repository with version ' + tag)
+     execute_shell(['git', 'tag', tag])
+-    print 'Pushing the new tag to github...'
++    print('Pushing the new tag to github...')
+     execute_shell(['git', 'push', 'origin', 'HEAD', '--tags'])
+
+
+ def download_tar(filename):
+-    print 'Downloading the new version...'
+-    urllib.urlretrieve(
++    print('Downloading the new version...')
++    urllib.request.urlretrieve(
+         'https://github.com/clintmod/macprefs/archive/' + filename, filename)
+
+
+ def calc_sha256(filename):
+-    print 'Calculating the sha256 of the tarball...'
++    print('Calculating the sha256 of the tarball...')
+     result = execute_shell(['shasum', '-a', '256', filename])
+-    print result
++    print(result)
+     sha256 = result.split('  ')[0]
+-    print sha256
++    print(sha256)
+     return sha256
+
+
+ def create_brew_formula_file_content(version, sha256):
+-    print 'Generating base64 encoded brew formula...'
++    print('Generating base64 encoded brew formula...')
+     # Read in the file
+     with open('macprefs.template.rb', 'r') as f:
+         filedata = f.read()
+     # Replace
+     filedata = filedata.replace('###sha256###', sha256)
+     filedata = filedata.replace('###version###', version)
+-    filedata = filedata.encode('base64').replace('\n', '')
++    filedata_bytes = bytes(filedata, 'utf-8')
++    filedata = base64.b64encode(filedata_bytes)
+     return filedata
+
+
+ def get_sha_of_old_macprefs_formula():
+-    print 'Getting sha of old macprefs formula from github...'
+-    result = json.load(urllib2.urlopen(
++    print('Getting sha of old macprefs formula from github...')
++    result = json.load(urllib.request.urlopen(
+         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
+     # print 'sha = ' + result['sha']
+     return result['sha']
+
+
+ def upload_new_brew_formula(content, version, sha):
+-    print 'Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas'
++    print('Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas')
+     token = os.environ['MACPREFS_TOKEN']
+     auth_header = 'Authorization: token ' + token
+     json_header = 'Content-Type: application/json'
+@@ -88,24 +91,24 @@
+
+
+ def cleanup():
+-    print 'Cleaning up...'
++    print('Cleaning up...')
+     for f in glob.glob('*.tar.gz'):
+         os.remove(f)
+     os.remove('github_request.json')
+
+
+ def download_macprefs():
+-    print 'Running brew update macprefs to verify version...'
++    print('Running brew update macprefs to verify version...')
+     result = execute_shell(['brew', 'upgrade', 'macprefs'], False, '.', True)
+     if not is_none_or_empty_string(result):
+-        print result
++        print(result)
+
+
+ def verify_macprefs():
+     result = execute_shell(['macprefs', '--version'])
+     message = '\nworkspace:\t' + __version__ + '\ninstalled:\t' + result
+     assert __version__ in result, message
+-    print 'version check verified' + message
++    print('version check verified' + message)
+
+
+ def main():
+@@ -124,7 +127,7 @@
+     download_macprefs()
+     verify_macprefs()
+
+-    print 'Success'
++    print('Success')
+
+     return True
+
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.py ./macprefs/shared_file_lists.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/shared_file_lists.py	2020-08-14 14:43:40.000000000 -0300
+@@ -8,7 +8,7 @@
+     log.info('Backing up shared file lists...')
+     source = config.get_shared_file_lists_dir()
+     if not exists(source):
+-        log.info('Warning: ' + source + ' does not exist.')
++        log.info('Warning: %s does not exist.', source)
+         log.info('Shared file backup failed.')
+         return
+     dest = config.get_shared_file_lists_backup_dir()
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/shared_file_lists.pyc and ./macprefs/shared_file_lists.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/ssh_files.pyc and ./macprefs/ssh_files.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/startup_items.pyc and ./macprefs/startup_items.pyc differ
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/system_preferences.pyc and ./macprefs/system_preferences.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_config.py ./macprefs/test_config.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_config.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_config.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,8 +1,8 @@
+ import os
+ from os import path
+-import config
+ from mock import patch
+
++import config
+
+ def test_get_macprefs_dir():
+     backup_dir = config.get_macprefs_dir()
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_dotfiles.py ./macprefs/test_dotfiles.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_dotfiles.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_dotfiles.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,6 +1,7 @@
+ from os import path
+-import dotfiles
+ from mock import patch
++
++import dotfiles
+ from config import get_dotfiles_backup_dir, get_home_dir, get_user
+
+ @patch('dotfiles.get_dot_files')
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py ./macprefs/test_macprefs.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_macprefs.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_macprefs.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,20 +1,19 @@
+-from StringIO import StringIO
+-import imp
++from io import StringIO
+ import sys
+ import logging as log
+ from mock import patch, MagicMock
+
++import utils
+
+ # load as module
+-macprefs = imp.load_source('macprefs', 'macprefs')
+-
++macprefs = utils.execute_module('macprefs', 'macprefs')
+
+ @patch('sys.stdout', new_callable=StringIO)
+ def test_invoke_help(mock_stdout):
+     try:
+         sys.argv = ['macprefs', '-h']
+         # invoke as script
+-        imp.load_source('__main__', 'macprefs')
++        utils.execute_module('__main__', 'macprefs')
+         assert False, 'expected SystemExit'
+     except SystemExit as e:
+         assert_correct_std_out(e, mock_stdout)
+@@ -49,7 +48,7 @@
+     try:
+         sys.argv = ['macprefs']
+         # invoke as script
+-        imp.load_source('__main__', 'macprefs')
++        utils.execute_module('__main__', 'macprefs')
+         assert False, 'expected SystemExit'
+     except SystemExit as e:
+         assert_correct_std_out(e, mock_stdout)
+@@ -125,7 +124,7 @@
+     try:
+         sys.argv = ['macprefs', 'backup']
+         # invoke as script
+-        imp.load_source('__main__', 'macprefs')
++        utils.execute_module('__main__', 'macprefs')
+         assert False, 'expected SystemExit'
+     except SystemExit as e:
+         assert e.code == 0
+@@ -136,7 +135,7 @@
+     try:
+         sys.argv = ['macprefs', 'restore']
+         # invoke as script
+-        imp.load_source('__main__', 'macprefs')
++        utils.execute_module('__main__', 'macprefs')
+         assert False, 'expected SystemExit'
+     except SystemExit as e:
+         assert e.code == 0 '''
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_preferences.py ./macprefs/test_preferences.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_preferences.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_preferences.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,5 +1,5 @@
+-from config import get_preferences_dir, get_preferences_backup_dir, get_user
+ from mock import patch
++from config import get_preferences_dir, get_preferences_backup_dir, get_user
+ import preferences
+
+
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py ./macprefs/test_publish.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_publish.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_publish.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,9 +1,9 @@
+ import json
+ import sys
+-import imp
+-import logging as log
++import base64
+ from mock import patch, call
+ import publish
++import utils
+ from version import __version__
+
+
+@@ -11,7 +11,7 @@
+     old_argv = sys.argv
+     sys.argv = ['publish', '-test']
+     # invoke as script
+-    imp.load_source('__main__', 'publish.py')
++    utils.execute_module('__main__', 'publish.py')
+     sys.argv = old_argv
+
+
+@@ -28,7 +28,7 @@
+         publish.check_for_uncommitted_files()
+         assert False, 'expecting ValueError'
+     except ValueError as e:
+-        assert 'uncommitted' in e.message
++        assert 'uncommitted' in '\n'.join(e.args)
+
+
+ @patch('publish.execute_shell')
+@@ -41,7 +41,7 @@
+     execute_shell_mock.assert_has_calls(calls)
+
+
+-@patch('urllib.urlretrieve')
++@patch('urllib.request.urlretrieve')
+ def test_download_tar(urllib_urlretrieve_mock):
+     filename = 'asdf'
+     publish.download_tar(filename)
+@@ -65,12 +65,12 @@
+
+ def test_create_brew_formula_file_content():
+     filedata = publish.create_brew_formula_file_content('ver1', 'asdf1234')
+-    filedata = filedata.decode('base64')
++    filedata = base64.b64decode(filedata).decode('utf-8')
+     assert 'ver1.tar.gz' in filedata
+     assert 'sha256 "asdf1234"' in filedata
+
+
+-@patch('publish.urllib2.urlopen')
++@patch('publish.urllib.request.urlopen')
+ @patch('publish.json.load')
+ def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
+     json_load_mock.return_value = {'sha': 'asdf'}
+@@ -144,7 +144,7 @@
+         assert False, 'expected AssertionError'
+     except AssertionError as e:
+         execute_shell_mock.assert_called_with(['macprefs', '--version'])
+-        assert __version__ in e.message
++        assert __version__ in '\n'.join(e.args)
+
+
+ @patch('publish.glob.glob')
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_ssh_files.py ./macprefs/test_ssh_files.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_ssh_files.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_ssh_files.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,7 +1,7 @@
+-from config import get_ssh_backup_dir, get_ssh_user_dir, get_user
+-import ssh_files
+ from mock import patch
+
++from config import get_ssh_backup_dir, get_ssh_user_dir, get_user
++import ssh_files
+
+ @patch('ssh_files.copy_dir')
+ def test_backup(copy_dir_mock):
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_startup_items.py ./macprefs/test_startup_items.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_startup_items.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_startup_items.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,7 +1,7 @@
+-import startup_items
+ from mock import patch
+-import config
+
++import startup_items
++import config
+
+ @patch('startup_items.backup_system_daemons_agents')
+ @patch('startup_items.backup_system_launch_agents')
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_system_preferences.py ./macprefs/test_system_preferences.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_system_preferences.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_system_preferences.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,8 +1,8 @@
+ from os import path
+-import system_preferences
+-from config import get_sys_preferences_backup_dir
+ from mock import patch
+
++import system_preferences
++from config import get_sys_preferences_backup_dir
+
+ @patch('system_preferences.copy_dir')
+ def test_backup(copy_dir_mock):
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py ./macprefs/test_utils.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/test_utils.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/test_utils.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,7 +1,8 @@
+ from subprocess import CalledProcessError
+ import logging as log
++from mock import patch
++
+ import utils
+-from mock import patch, PropertyMock
+ import config
+
+
+@@ -16,7 +17,7 @@
+     length = len(command)
+     assert length > 0
+     assert command[0] == 'asdf'
+-    return ''
++    return b''
+
+
+ @patch('utils.check_output')
+@@ -56,7 +57,7 @@
+     files = ['asdf']
+     dest = "asdf2"
+     utils.copy_files(files, dest)
+-    print log_mock.mock_calls
++    print(log_mock.mock_calls)
+     execute_shell_mock.assert_called_with(
+         ['rsync', '-a', '-vv'] + files + [dest]
+     )
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/utils.py ./macprefs/utils.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/utils.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/utils.py	2020-08-14 14:43:40.000000000 -0300
+@@ -1,16 +1,18 @@
+ from subprocess import CalledProcessError, check_output, STDOUT
++import sys
++import importlib
+ import logging as log
+
+
+ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False):
+     output = ''
+     log.debug('\n--- executing shell command ----\n')
+-    log.debug('setting working dir to: ' + cwd)
+-    log.debug('command: ' + str(command))
++    log.debug('setting working dir to: %s', cwd)
++    log.debug('command: %s', str(command))
+     try:
+         output = check_output(command, shell=is_shell,
+-                              cwd=cwd, stderr=STDOUT).strip().decode("utf-8")
+-        log.debug('output = ' + output)
++                              cwd=cwd, stderr=STDOUT).strip().decode('utf-8')
++        log.debug('output = %s', output)
+     except CalledProcessError as err:
+         log.error('Error Info:\nerror code = %s\ncmd %s\nerror message:%s',
+                   err.returncode, err.cmd, err.output)
+@@ -69,7 +71,7 @@
+     command = ['sudo', 'chmod', str(mode)] + files
+     result = execute_shell(command)
+     if not is_none_or_empty_string(result):
+-        log.debug('change_mode_for_files: ' + result)
++        log.debug('change_mode_for_files: %s', result)
+
+
+ def change_owner(path, owner, should_recurse=True):
+@@ -103,3 +105,11 @@
+     if val is None or val == '':
+         return True
+     return False
++
++
++def execute_module(name, path):
++    spec = importlib.util.spec_from_loader(name, importlib.machinery.SourceFileLoader(name, path))
++    mod = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(mod)
++    sys.modules[name] = mod
++    return mod
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/utils.pyc and ./macprefs/utils.pyc differ
+diff -ruN /usr/local/Cellar/macprefs/1.0.26/bin/version.py ./macprefs/version.py
+--- /usr/local/Cellar/macprefs/1.0.26/bin/version.py	2018-09-07 16:30:20.000000000 -0300
++++ ./macprefs/version.py	2020-09-27 19:13:59.000000000 -0300
+@@ -1 +1 @@
+-__version__ = 'v1.0.26'
++__version__ = 'v1.0.26-marcomc-d79da5d'
+Binary files /usr/local/Cellar/macprefs/1.0.26/bin/version.pyc and ./macprefs/version.pyc differ

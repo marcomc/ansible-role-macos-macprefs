@@ -1,0 +1,15 @@
+---
+
+- name: Look for Macprefs backup dir '{{ macprefs_backup_dir }}'.
+  stat:
+    path: "{{ macprefs_backup_dir | mandatory }}"
+  register: macprefs_backup
+
+- name: Run Macprefs restore if MacPref Backup dir '{{ macprefs_backup_dir }}' is present.
+  shell: python2 $(command -v macprefs) restore
+  environment:
+    MACPREFS_BACKUP_DIR: "{{ macprefs_backup.stat.path }}"
+  when: macprefs_backup.stat.isdir is defined and macprefs_backup.stat.isdir
+  changed_when: false
+  register: macperfs_output
+  ignore_errors: yes
