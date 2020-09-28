@@ -6,19 +6,19 @@
   block:
   - include_tasks: install-macprefs.yml
 
-  - name: Fails if version is 1.0.26, and trigger 'rescue' that will verify if the patch is needed
-    block:
-    - name: Verify if Macpref version is 1.0.26
-      lineinfile:
-        dest: "{{ macprefs_bin_path }}/version.py"
-        state: present
-        regexp: '^.*1.0.26.*$'
-      check_mode: yes
-      register: macpref_version
-      failed_when: macpref_version.changed
+  - name: Get macprefs version
+    command: "brew info macprefs"
+    register: macprefs_version
+    changed_when: no
+    failed_when: no
 
-    rescue:
-    - include_tasks: patch-with-marcomc-d79da5d.yml
+  - name: macprefs_version
+    debug:
+      var: macprefs_version
+    when: verbose|bool
+
+  - include_tasks: patch-with-marcomc-d79da5d.yml
+    when: macprefs_version.stdout | regex_search('macprefs/1.0.26')
 
   - name: User specific tasks
     block:
