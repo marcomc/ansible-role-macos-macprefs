@@ -6,3 +6,4 @@ macprefs_update_for_all_shell_types: no
 macprefs_backup_dir: "$HOME/Dropbox/MacPrefsBackup"
 macprefs_regular_backup: 0
 macprefs_log: '~/Library/Logs/macprefs.log'
+restore_dotfiles_with_macprefs: no

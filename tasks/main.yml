@@ -29,6 +29,8 @@
     become_user: "{{ target_user_id }}"
 
   - include_tasks: restore-macprefs-backup.yml
-    when: target_user_id == ansible_user_id
+    when:
+      - restore_dotfiles_with_macprefs|bool
+      - target_user_id == ansible_user_id
   # end block
   when: ansible_facts['os_family'] == 'Darwin'
