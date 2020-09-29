@@ -5,4 +5,4 @@
     minute: "0/{{ macprefs_regular_backup|int }}"
     job: "{{ item }}"
   loop:
-    - "MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir | expanduser }}' /usr/local/bin/macprefs -v backup > {{ macprefs_log | expanduser  }} 2>&1"
+    - "MACPREFS_BACKUP_DIR='{{ macprefs_backup_dir }}' /usr/local/bin/macprefs -v backup > {{ macprefs_log  }} 2>&1"

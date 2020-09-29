@@ -22,6 +22,7 @@
 
   - name: User specific tasks
     block:
+    - include_tasks: normalise-directories.yml
     - include_tasks: set-macprefs-backup-dir.yml
     - include_tasks: configure-cron-job.yml
       when: macprefs_regular_backup|int > 0
