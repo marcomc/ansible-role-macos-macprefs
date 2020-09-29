@@ -5,14 +5,20 @@
 
 - name: Fails if not patched, and trigger 'rescue' that will patch
   block:
-  - name: Verify if macpref 1.0.26 is already patched with 'marcomc-8bce8b8'
+  - name: Verify if Macpref 1.0.26 is already patched with 'marcomc-8bce8b8'
     lineinfile:
       dest: "{{ macprefs_bin_path }}/version.py"
       regexp: '^.*marcomc-8bce8b8.*$'
+      line: 'v1.0.26-marcomc-8bce8b8'
     check_mode: yes
     register: marcomc_8bce8b8_presence
     failed_when: marcomc_8bce8b8_presence.changed
     ignore_errors: no
+
+  - name: marcomc_8bce8b8_presence
+    debug:
+      var: marcomc_8bce8b8_presence
+    when: verbose|bool
 
   rescue:
   - name: Apply patch to macprefs 1.0.26 to support Python3
