@@ -6,15 +6,14 @@
 
 - name: Run Macprefs restore if MacPref Backup dir '{{ macprefs_backup_dir }}' is present.
   shell: "{{ item }}"
-  environment:
-    MACPREFS_BACKUP_DIR: "{{ macprefs_backup_dir | expanduser }}"
   loop:
     - "$(command -v macprefs) -v restore > {{ macprefs_log | expanduser }} 2>&1"
+  environment:
+    MACPREFS_BACKUP_DIR: "{{ macprefs_backup_dir | expanduser }}"
   become: yes
-  when: macprefs_backup.stat.isdir is defined and macprefs_backup.stat.isdir
-  changed_when: false
-  register: macprefs_restore_sleeper
+  register: macprefs_restore
   ignore_errors: yes
-  async: 3600
-  poll: 0
-  notify: Waiting for the Macprefs restore to finish
+  when:
+  - macprefs_backup.stat.isdir is defined
+  - macprefs_backup.stat.isdir
+  changed_when: false
