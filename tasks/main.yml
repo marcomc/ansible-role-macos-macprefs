@@ -17,7 +17,7 @@
       var: macprefs_version
     when: verbose|bool
 
-  - include_tasks: patch-with-marcomc-d79da5d.yml
+  - include_tasks: patch-with-marcomc-8bce8b8.yml
     when: macprefs_version.stdout | regex_search('macprefs/1.0.26')
 
   - name: User specific tasks
