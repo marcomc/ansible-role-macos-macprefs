@@ -38,4 +38,3 @@
   when:
     - item.shell_name == target_user_default_shell|default('') or
       macprefs_update_for_all_shell_types|bool
-...

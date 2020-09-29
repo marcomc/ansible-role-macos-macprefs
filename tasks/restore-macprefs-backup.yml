@@ -1,14 +1,15 @@
 ---
-
 - name: Look for Macprefs backup dir '{{ macprefs_backup_dir }}'.
   stat:
     path: "{{ macprefs_backup_dir | expanduser | mandatory }}"
   register: macprefs_backup
 
 - name: Run Macprefs restore if MacPref Backup dir '{{ macprefs_backup_dir }}' is present.
-  shell: echo "AAA $MACPREFS_BACKUP_DIR" && $(command -v macprefs) -v restore backup > "{{ macprefs_log }}" 2>&1
+  shell: "{{ item }}"
   environment:
     MACPREFS_BACKUP_DIR: "{{ macprefs_backup_dir | expanduser }}"
+  loop:
+    - "echo \"AAA $MACPREFS_BACKUP_DIR\" && $(command -v macprefs) -v restore backup > {{ macprefs_log }} 2>&1"
   when: macprefs_backup.stat.isdir is defined and macprefs_backup.stat.isdir
   changed_when: false
   register: macprefs_restore_sleeper

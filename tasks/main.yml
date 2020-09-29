@@ -18,9 +18,7 @@
     when: verbose|bool
 
   - include_tasks: patch-with-marcomc-d79da5d.yml
-    when:
-      - macprefs_version.stdout | regex_search('macprefs/1.0.26')
-      - not macprefs_version.stdout | regex_search('macprefs/1.0.26')
+    when: macprefs_version.stdout | regex_search('macprefs/1.0.26')
 
   - name: User specific tasks
     block:
