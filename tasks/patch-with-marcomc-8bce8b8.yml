@@ -2,7 +2,7 @@
 - name: Apply patch to macprefs 1.0.26 to support Python3
   patch:
     src: macprefs-1.0.26-marcomc-8bce8b8.patch
-    basedir: "{{ macprefs_bin_path }}"
+    basedir: '/usr/local/Cellar/macprefs/1.0.26/bin/'
     strip: 0
   register: patch_result
 
