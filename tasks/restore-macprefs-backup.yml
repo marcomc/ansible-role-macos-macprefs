@@ -1,10 +1,10 @@
 ---
-- name: Look for Macprefs backup dir '{{ macprefs_backup_dir }}'.
+- name: Look for Macprefs backup dir '{{ macprefs_backup_dir | expanduser }}'.
   stat:
     path: "{{ macprefs_backup_dir | expanduser | mandatory }}"
   register: macprefs_backup
 
-- name: Run Macprefs restore if MacPref Backup dir '{{ macprefs_backup_dir }}' is present.
+- name: Run Macprefs restore if MacPref Backup dir '{{ macprefs_backup_dir | expanduser }}' is present.
   shell: "{{ item }}"
   loop:
     - "$(command -v macprefs) -v restore > {{ macprefs_log | expanduser }} 2>&1"
