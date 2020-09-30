@@ -22,7 +22,6 @@ For example
       vars:
         macprefs_regular_backup: 720 # every 12 hours
         macprefs_backup_dir: ~/Library/Mobile Documents/com~apple~CloudDocs/Macprefs # use iCloud instead of Dropbox
-        macprefs_restore_configs: yes
 
       roles:
         - marcomc.macos_macprefs
@@ -36,7 +35,6 @@ For example
     macprefs_backup_dir: "~/Dropbox/MacPrefsBackup"
     macprefs_regular_backup: 0
     macprefs_log: '~/Library/Logs/macprefs.log'
-    macprefs_restore_configs: no
 
 By default MacPrefs will look for its backup folder in your Dropbox directory, but this assumes that Dropbox is already installed and configured in your system.
 

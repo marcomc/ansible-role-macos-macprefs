@@ -5,5 +5,4 @@ target_user_default_shell: ''
 macprefs_update_for_all_shell_types: no
 macprefs_backup_dir: '~/Dropbox/MacPrefsBackup'
 macprefs_regular_backup: 0
-macprefs_log: '~/Library/Logs/macprefs.log'
-macprefs_restore_configs: no
+macprefs_log: '~/Lbrary/Logs/macprefs.log'
