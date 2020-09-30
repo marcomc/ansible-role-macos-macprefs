@@ -31,7 +31,7 @@
 
   - include_tasks: restore-macprefs-backup.yml
     when:
-      - restore_dotfiles_with_macprefs|bool
+      - macprefs_restore_configs|bool
       - target_user_id == ansible_user_id
   # end block
   when: ansible_facts['os_family'] == 'Darwin'
