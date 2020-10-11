@@ -1,12 +1,12 @@
 ---
 os: osx
+language: generic
+python: 3.8.5
 osx_image:
 # OS X 10.15
   - xcode12
 # OS X 10.14
   - xcode11.2
-
-language: generic
 
 sudo: required
 install:
@@ -16,7 +16,6 @@ env:
   global:
     - TEST_ANSIBLE_HOSTNAME: localhost
       TEST_ANSIBLE_CONNECTION: local
-      PYTHON: 3.5.1
       ANSIBLE_BECOME_PASS: travis
 script:
   - ansible-lint .
