@@ -1,0 +1,15 @@
+---
+- hosts: local
+  tasks:
+    - add_host:
+        groups: local
+        name: "{{ lookup('env','TEST_ANSIBLE_HOSTNAME') }}"
+      changed_when: false
+
+- hosts: local
+  vars:
+    verbose: yes
+    macprefs_regular_backup: 720 # every 12 hours
+    macprefs_backup_dir: ~/Macprefs # use iCloud instead of Dropbox
+  roles:
+    - marcomc.macos_macprefs...

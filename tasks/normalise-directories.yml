@@ -4,7 +4,7 @@
     macprefs_backup_dir: "{{ item }}"
   loop:
     - "{{ macprefs_backup_dir | expanduser }}"
-    
+
 - name: Normalise Macprefs log dir path
   set_fact:
     macprefs_log: "{{ item }}"
