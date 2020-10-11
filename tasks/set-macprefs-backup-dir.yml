@@ -3,6 +3,7 @@
   - name: Retrive user's default shell
     shell: dscl . -read /Users/{{ target_user_id }} UserShell | sed 's/ //g' | cut -d ':' -f2
     register: command_result
+    changed_when: no
 
   - name: User's default shell
     set_fact:
