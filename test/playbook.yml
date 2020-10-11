@@ -9,7 +9,6 @@
 - hosts: local
   vars:
     verbose: yes
-    macprefs_regular_backup: 720 # every 12 hours
     macprefs_backup_dir: ~/Macprefs # use iCloud instead of Dropbox
   roles:
     - macos_macprefs
