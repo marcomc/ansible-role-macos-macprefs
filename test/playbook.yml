@@ -12,4 +12,5 @@
     macprefs_regular_backup: 720 # every 12 hours
     macprefs_backup_dir: ~/Macprefs # use iCloud instead of Dropbox
   roles:
-    - marcomc.macos_macprefs...
+    - macos_macprefs
+...
